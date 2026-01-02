@@ -1,0 +1,2208 @@
+/* ===== CSS 변수 (테마) ===== */
+:root {
+    --primary-color: #ff6b35;
+    --primary-dark: #e55a2b;
+    --secondary-color: #4a90a4;
+    --background-color: #f5f5f5;
+    --card-background: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+    --border-color: #e0e0e0;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --danger-color: #f44336;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --header-height: 56px;
+    --nav-height: 64px;
+    --transition: 0.2s ease;
+}
+
+/* ===== 리셋 및 기본 스타일 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+input, textarea, select {
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+/* ===== 앱 컨테이너 ===== */
+#app {
+    max-width: 768px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-background);
+}
+
+/* ===== 헤더 ===== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 768px;
+    height: var(--header-height);
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    transition: background-color var(--transition);
+}
+
+.icon-btn:hover {
+    background-color: var(--background-color);
+}
+
+/* ===== 메인 컨텐츠 ===== */
+.main-content {
+    flex: 1;
+    margin-top: var(--header-height);
+    margin-bottom: var(--nav-height);
+    padding: 16px;
+    overflow-y: auto;
+}
+
+/* ===== 하단 네비게이션 ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 768px;
+    height: var(--nav-height);
+    background-color: var(--card-background);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    color: var(--text-muted);
+    transition: color var(--transition);
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+
+.nav-icon {
+    font-size: 1.5rem;
+}
+
+.nav-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* ===== 카드 스타일 ===== */
+.card {
+    background-color: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+/* ===== 버튼 스타일 ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* ===== 입력 필드 ===== */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    transition: border-color var(--transition);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* ===== 태그 스타일 ===== */
+.tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: var(--background-color);
+    color: var(--text-secondary);
+    border-radius: 16px;
+    font-size: 0.875rem;
+}
+
+.tag-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* ===== 레시피 카드 ===== */
+.recipe-card {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.recipe-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.recipe-card-image {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    background-color: var(--background-color);
+    flex-shrink: 0;
+}
+
+.recipe-card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.recipe-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipe-card-meta {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.recipe-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.recipe-card-tags .tag {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+}
+
+/* ===== 레시피 그리드 ===== */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+/* ===== 섹션 스타일 ===== */
+.section {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== 빈 상태 ===== */
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-muted);
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.empty-state-text {
+    font-size: 0.875rem;
+    margin-bottom: 24px;
+}
+
+/* ===== 모달 ===== */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 200;
+}
+
+.modal-container.hidden {
+    display: none;
+}
+
+.modal {
+    background-color: var(--card-background);
+    border-radius: var(--radius);
+    max-width: 400px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 16px;
+}
+
+.modal-footer {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* ===== 토스트 메시지 ===== */
+.toast-container {
+    position: fixed;
+    bottom: calc(var(--nav-height) + 16px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast {
+    padding: 12px 24px;
+    background-color: var(--text-primary);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    animation: slideUp 0.3s ease;
+}
+
+.toast-success {
+    background-color: var(--success-color);
+}
+
+.toast-error {
+    background-color: var(--danger-color);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== 검색바 ===== */
+.search-bar {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    font-size: 1rem;
+    background-color: var(--background-color);
+}
+
+.search-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: var(--card-background);
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+/* ===== 필터 칩 ===== */
+.filter-chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.filter-chips::-webkit-scrollbar {
+    display: none;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    background-color: var(--background-color);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    transition: all var(--transition);
+}
+
+.chip.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* ===== 로딩 스피너 ===== */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== 유틸리티 클래스 ===== */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-8 {
+    margin-bottom: 8px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mb-24 {
+    margin-bottom: 24px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gap-8 {
+    gap: 8px;
+}
+
+.gap-16 {
+    gap: 16px;
+}
+
+/* ===== 레시피 상세 페이지 ===== */
+.recipe-detail-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+}
+
+.recipe-detail-header {
+    margin-bottom: 24px;
+}
+
+.recipe-detail-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.recipe-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.recipe-detail-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.recipe-ingredients {
+    background-color: var(--background-color);
+    padding: 16px;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+}
+
+.recipe-ingredients h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.ingredient-list {
+    list-style: none;
+}
+
+.ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ingredient-item:last-child {
+    border-bottom: none;
+}
+
+.recipe-steps {
+    margin-bottom: 24px;
+}
+
+.recipe-steps h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.step-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.step-item:last-child {
+    border-bottom: none;
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-image {
+    width: 100%;
+    max-width: 200px;
+    border-radius: var(--radius-sm);
+    margin-top: 8px;
+}
+
+/* ===== 쇼핑리스트 ===== */
+.shopping-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.shopping-item.checked .shopping-item-name {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.shopping-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+}
+
+.shopping-checkbox.checked {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+}
+
+.shopping-item-name {
+    flex: 1;
+}
+
+.shopping-item-amount {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.shopping-category {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 12px 0 8px;
+    margin-top: 8px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* ===== 요리 모드 ===== */
+.cooking-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--card-background);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+}
+
+.cooking-mode-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cooking-mode-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.cooking-step-number {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.cooking-step-text {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.cooking-step-image {
+    max-width: 100%;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+}
+
+.cooking-timer {
+    background-color: var(--background-color);
+    padding: 24px;
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.cooking-timer-display {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: monospace;
+    margin-bottom: 16px;
+}
+
+.cooking-mode-nav {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.cooking-mode-nav .btn {
+    flex: 1;
+}
+
+/* ===== 반응형 디자인 ===== */
+@media (min-width: 768px) {
+    .recipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .recipe-detail-image {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .recipe-card {
+        flex-direction: column;
+    }
+
+    .recipe-card-image {
+        width: 100%;
+        height: 150px;
+    }
+}
+
+/* ===== 설정 페이지 ===== */
+.settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color var(--transition);
+}
+
+.settings-item:hover {
+    background-color: var(--background-color);
+}
+
+.settings-item-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-item-icon {
+    font-size: 1.5rem;
+}
+
+.settings-item-title {
+    font-weight: 500;
+}
+
+.settings-item-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+/* ===== 이미지 업로드 ===== */
+.image-upload {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    overflow: hidden;
+}
+
+.image-upload:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(255, 107, 53, 0.05);
+}
+
+.image-upload-icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+.image-upload-text {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.image-upload-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-upload input[type="file"] {
+    display: none;
+}
+
+.image-upload-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+/* ===== 동적 리스트 입력 ===== */
+.dynamic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dynamic-list-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.dynamic-list-item .form-input {
+    flex: 1;
+}
+
+.dynamic-list-item .btn-remove {
+    width: 40px;
+    height: 40px;
+    color: var(--danger-color);
+    font-size: 1.25rem;
+}
+
+.btn-add-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    transition: all var(--transition);
+}
+
+.btn-add-item:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* ===== 인분 조절 ===== */
+.servings-control {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.servings-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--background-color);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+}
+
+.servings-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.servings-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* ===== 홈 페이지 추가 스타일 ===== */
+.home-page .welcome-section {
+    text-align: center;
+    padding: 24px 0;
+}
+
+.home-page .welcome-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.home-page .welcome-subtitle {
+    color: var(--text-secondary);
+}
+
+.home-page .quick-search-section .search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: var(--background-color);
+    border-radius: 24px;
+    cursor: pointer;
+}
+
+.home-page .category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.home-page .category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    background-color: var(--background-color);
+    border-radius: var(--radius);
+    transition: all var(--transition);
+}
+
+.home-page .category-card:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.home-page .category-icon {
+    font-size: 1.5rem;
+}
+
+.home-page .category-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.home-page .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.home-page .view-all-btn,
+.home-page .clear-btn {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+}
+
+.home-page .recipe-scroll-container {
+    overflow-x: auto;
+    margin: 0 -16px;
+    padding: 0 16px;
+}
+
+.home-page .recipe-scroll {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 8px;
+}
+
+.home-page .recipe-card-small {
+    flex-shrink: 0;
+    width: 160px;
+    background-color: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.home-page .recipe-card-small .recipe-card-image {
+    width: 100%;
+    height: 100px;
+    position: relative;
+}
+
+.home-page .recipe-card-small .recipe-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.home-page .recipe-card-small .recipe-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    font-size: 2rem;
+}
+
+.home-page .recipe-card-small .favorite-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.home-page .recipe-card-small .recipe-card-info {
+    padding: 8px;
+}
+
+.home-page .recipe-card-small .recipe-card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.home-page .recipe-card-small .recipe-card-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.home-page .empty-section {
+    text-align: center;
+    padding: 48px 24px;
+}
+
+.home-page .empty-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.home-page .empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.home-page .empty-description {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.home-page .primary-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.home-page .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.home-page .quick-action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: var(--radius);
+    transition: all var(--transition);
+}
+
+.home-page .quick-action-card:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.home-page .action-icon {
+    font-size: 1.5rem;
+}
+
+.home-page .action-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* ===== 레시피 목록 페이지 추가 스타일 ===== */
+.recipes-page .search-section {
+    margin-bottom: 16px;
+}
+
+.recipes-page .filter-section {
+    margin-bottom: 16px;
+}
+
+.recipes-page .filter-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.recipes-page .filter-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.recipes-page .filter-chip {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    background-color: var(--background-color);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    transition: all var(--transition);
+}
+
+.recipes-page .filter-chip.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.recipes-page .subcategory-filter {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color);
+}
+
+.recipes-page .subcategory-chip {
+    background-color: var(--secondary-color);
+    background-color: rgba(74, 144, 164, 0.1);
+    color: var(--secondary-color);
+}
+
+.recipes-page .subcategory-chip.active {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.recipes-page .filter-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.recipes-page .filter-toggle-btn,
+.recipes-page .sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--background-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+}
+
+.recipes-page .filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}
+
+.recipes-page .filter-panel {
+    padding: 16px;
+    background-color: var(--background-color);
+    border-radius: var(--radius);
+    margin-top: 12px;
+}
+
+.recipes-page .filter-group {
+    margin-bottom: 16px;
+}
+
+.recipes-page .filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.recipes-page .filter-group-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.recipes-page .filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.recipes-page .filter-option {
+    padding: 6px 12px;
+    background-color: var(--card-background);
+    border-radius: 16px;
+    font-size: 0.875rem;
+    transition: all var(--transition);
+}
+
+.recipes-page .filter-option.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.recipes-page .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.recipes-page .tag-chip {
+    padding: 6px 12px;
+    background-color: var(--card-background);
+    border-radius: 16px;
+    font-size: 0.875rem;
+    transition: all var(--transition);
+}
+
+.recipes-page .tag-chip.active {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.recipes-page .filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.recipes-page .reset-filters-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--card-background);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 16px;
+}
+
+.recipes-page .sort-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 8px 0;
+    z-index: 200;
+    min-width: 200px;
+}
+
+.recipes-page .sort-option {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.875rem;
+    transition: background-color var(--transition);
+}
+
+.recipes-page .sort-option:hover {
+    background-color: var(--background-color);
+}
+
+.recipes-page .sort-option.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.recipes-page .recipes-header {
+    margin-bottom: 16px;
+}
+
+.recipes-page .recipes-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.recipes-page .recipe-card .recipe-card-image {
+    position: relative;
+    height: 150px;
+}
+
+.recipes-page .recipe-card .recipe-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipes-page .recipe-placeholder-large {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    font-size: 3rem;
+}
+
+.recipes-page .favorite-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.recipes-page .category-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    font-size: 0.875rem;
+}
+
+.recipes-page .recipe-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.recipes-page .recipe-description {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.recipes-page .recipe-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.recipes-page .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.recipes-page .recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.recipes-page .recipe-tag {
+    padding: 2px 8px;
+    background-color: var(--background-color);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.recipes-page .recipe-tag-more {
+    padding: 2px 8px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+.recipes-page .empty-recipes {
+    text-align: center;
+    padding: 48px 24px;
+}
+
+.recipes-page .empty-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.recipes-page .empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.recipes-page .empty-description {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.recipes-page .primary-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.recipes-page .floating-add-btn {
+    position: fixed;
+    bottom: calc(var(--nav-height) + 24px);
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    font-size: 2rem;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.clear-search-btn {
+    padding: 8px;
+    color: var(--text-muted);
+}
+
+/* ===== 쇼핑리스트 페이지 추가 스타일 ===== */
+.shopping-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.shopping-page .page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.shopping-page .header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.shopping-page .selected-recipes {
+    margin-bottom: 24px;
+}
+
+.shopping-page .recipe-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.shopping-page .recipe-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--background-color);
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.shopping-page .chip-servings {
+    color: var(--text-muted);
+}
+
+.shopping-page .chip-remove {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.shopping-page .chip-remove:hover {
+    color: var(--danger-color);
+}
+
+.shopping-page .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.shopping-page .checked-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.shopping-page .ingredient-category {
+    margin-bottom: 16px;
+}
+
+.shopping-page .category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.shopping-page .category-icon {
+    font-size: 1.25rem;
+}
+
+.shopping-page .category-name {
+    font-weight: 600;
+}
+
+.shopping-page .category-count {
+    margin-left: auto;
+    padding: 2px 8px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.shopping-page .ingredient-items {
+    list-style: none;
+}
+
+.shopping-page .ingredient-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.shopping-page .ingredient-item.checked {
+    opacity: 0.5;
+}
+
+.shopping-page .ingredient-item.checked .ingredient-name {
+    text-decoration: line-through;
+}
+
+.shopping-page .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    cursor: pointer;
+}
+
+.shopping-page .ingredient-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-color);
+}
+
+.shopping-page .ingredient-name {
+    flex: 1;
+}
+
+.shopping-page .ingredient-amount {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.shopping-page .ingredient-sources {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+
+.shopping-page .progress-bar-container {
+    position: fixed;
+    bottom: var(--nav-height);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 768px;
+    height: 4px;
+    background-color: var(--border-color);
+}
+
+.shopping-page .progress-bar {
+    height: 100%;
+    background-color: var(--success-color);
+    transition: width 0.3s ease;
+}
+
+/* ===== 설정 페이지 추가 스타일 ===== */
+.settings-page .page-header {
+    margin-bottom: 24px;
+}
+
+.settings-page .page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.settings-page .settings-section {
+    margin-bottom: 32px;
+}
+
+.settings-page .settings-group {
+    background-color: var(--card-background);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.settings-page .setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color var(--transition);
+}
+
+.settings-page .setting-item:last-child {
+    border-bottom: none;
+}
+
+.settings-page .setting-item:hover:not(.readonly) {
+    background-color: var(--background-color);
+}
+
+.settings-page .setting-item.readonly {
+    cursor: default;
+}
+
+.settings-page .setting-item.danger .setting-label {
+    color: var(--danger-color);
+}
+
+.settings-page .setting-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-page .setting-icon {
+    font-size: 1.5rem;
+}
+
+.settings-page .setting-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.settings-page .setting-label {
+    font-weight: 500;
+}
+
+.settings-page .setting-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.settings-page .setting-arrow {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+}
+
+.settings-page .settings-footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.settings-page .copyright {
+    margin-bottom: 4px;
+}
+
+.settings-page .help-section {
+    margin-bottom: 24px;
+}
+
+.settings-page .help-section:last-child {
+    margin-bottom: 0;
+}
+
+.settings-page .help-section h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+.settings-page .help-section p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.settings-page .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 200;
+}
+
+.settings-page .how-to-use-modal {
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* ===== 요리 모드 페이지 추가 스타일 ===== */
+.cooking-mode-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--card-background);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.cooking-mode-page .cooking-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cooking-mode-page .cooking-close-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+}
+
+.cooking-mode-page .cooking-title {
+    font-size: 1rem;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+}
+
+.cooking-mode-page .cooking-progress-text {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.cooking-mode-page .cooking-progress-bar {
+    height: 4px;
+    background-color: var(--border-color);
+}
+
+.cooking-mode-page .cooking-progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.cooking-mode-page .cooking-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.cooking-mode-page .step-number {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+}
+
+.cooking-mode-page .step-text {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    font-weight: 500;
+    max-width: 600px;
+}
+
+.cooking-mode-page .step-time-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    padding: 12px 20px;
+    background-color: var(--background-color);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.cooking-mode-page .timer-section {
+    padding: 24px;
+    background-color: var(--background-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.cooking-mode-page .timer-display {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: monospace;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.cooking-mode-page .timer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.cooking-mode-page .timer-preset-btn {
+    padding: 8px 16px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.cooking-mode-page .timer-main-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.cooking-mode-page .timer-btn {
+    padding: 12px 20px;
+    background-color: var(--card-background);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.cooking-mode-page .timer-btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 32px;
+}
+
+.cooking-mode-page .timer-reset-btn {
+    padding: 8px 16px;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.cooking-mode-page .cooking-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.cooking-mode-page .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: var(--background-color);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.cooking-mode-page .nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.cooking-mode-page .nav-arrow {
+    font-size: 1.25rem;
+}
+
+.cooking-mode-page .step-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.cooking-mode-page .step-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.cooking-mode-page .step-dot.active {
+    background-color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+.cooking-mode-page .step-dot.completed {
+    background-color: var(--success-color);
+}
+
+.cooking-mode-page .cooking-complete-section {
+    padding: 16px;
+}
+
+.cooking-mode-page .btn-large {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.125rem;
+}
+
+.cooking-mode-page .cooking-error {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+}
+
+.cooking-mode-page .error-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+/* ===== 레시피 상세 페이지 뒤로가기 버튼 ===== */
+.recipe-detail .recipe-detail-nav {
+    margin-bottom: 16px;
+}
+
+.recipe-detail .recipe-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.recipe-detail .recipe-extra-info {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.recipe-detail .recipe-detail-desc {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ===== 레시피 폼 페이지 추가 스타일 ===== */
+.recipe-form .ingredient-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.recipe-form .step-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background-color: var(--background-color);
+    border-radius: var(--radius);
+}
+
+.recipe-form .btn-remove {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background-color: transparent;
+    border-radius: 50%;
+}
+
+.recipe-form .btn-remove:hover:not(:disabled) {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+.recipe-form .btn-remove:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* ===== 맛집 추천 섹션 ===== */
+.restaurant-section {
+    margin-top: 32px;
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: var(--radius);
+}
+
+.restaurant-section .section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.restaurant-subtitle {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+}
+
+.restaurant-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.restaurant-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background-color: var(--card-background);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+}
+
+.restaurant-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.restaurant-name {
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.restaurant-location {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}
+
+.restaurant-link {
+    padding: 8px 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all var(--transition);
+}
+
+.restaurant-link:hover {
+    background-color: var(--primary-dark);
+}
+
+.restaurant-more-links {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.restaurant-more-links .btn {
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+    font-size: 0.8125rem;
+}

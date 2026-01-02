@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBooks - 이미지 URL 수집 도구</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #eee; padding: 20px; min-height: 100vh; }
+        h1 { text-align: center; margin-bottom: 10px; color: #00d9ff; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
+        .instructions { background: #16213e; padding: 20px; border-radius: 10px; margin-bottom: 30px; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .instructions h3 { color: #00d9ff; margin-bottom: 10px; }
+        .instructions ol { margin-left: 20px; line-height: 1.8; }
+        .food-list { display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; }
+        .food-item { background: #16213e; border-radius: 10px; padding: 20px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
+        .food-item.fixed { border: 2px solid #00ff88; }
+        .current-image { width: 200px; }
+        .current-image img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #e74c3c; }
+        .current-image.new-img img { border-color: #00ff88; }
+        .current-image .label { font-size: 12px; color: #e74c3c; margin-top: 5px; text-align: center; }
+        .current-image.new-img .label { color: #00ff88; }
+        .food-info { display: flex; flex-direction: column; gap: 10px; }
+        .food-name { font-size: 22px; font-weight: bold; color: #fff; }
+        .food-lines { font-size: 13px; color: #00d9ff; background: rgba(0, 217, 255, 0.1); padding: 8px 12px; border-radius: 5px; }
+        .issue { font-size: 14px; color: #f39c12; background: rgba(243, 156, 18, 0.1); padding: 5px 10px; border-radius: 5px; display: inline-block; }
+        .search-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .search-links a { padding: 8px 15px; background: #0f3460; color: #00d9ff; text-decoration: none; border-radius: 5px; font-size: 13px; }
+        .search-links a:hover { background: #00d9ff; color: #1a1a2e; }
+        .url-input { display: flex; gap: 10px; margin-top: 10px; }
+        .url-input input { flex: 1; padding: 12px; border: 2px solid #0f3460; border-radius: 5px; background: #0f3460; color: #fff; font-size: 14px; }
+        .url-input input:focus { outline: none; border-color: #00d9ff; }
+        .url-input input.valid { border-color: #00ff88; }
+        .url-input button { padding: 12px 25px; background: #00d9ff; color: #1a1a2e; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .url-input button:hover { background: #00ffcc; }
+        .preview { margin-top: 10px; }
+        .preview img { max-width: 200px; max-height: 120px; border-radius: 5px; border: 2px solid #00ff88; }
+        .generate-btn { display: block; width: 100%; max-width: 400px; margin: 30px auto; padding: 15px 30px; background: linear-gradient(135deg, #00d9ff, #00ff88); color: #1a1a2e; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .generate-btn:hover { transform: scale(1.02); }
+        .output { background: #0f3460; padding: 20px; border-radius: 10px; margin-top: 20px; max-width: 900px; margin-left: auto; margin-right: auto; display: none; }
+        .output h3 { color: #00d9ff; margin-bottom: 15px; }
+        .output pre { background: #1a1a2e; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 12px; color: #00ff88; white-space: pre-wrap; word-break: break-all; }
+        .copy-btn { padding: 10px 20px; background: #00ff88; color: #1a1a2e; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .stats { text-align: center; margin-bottom: 20px; color: #888; }
+        .stats span { margin: 0 15px; }
+        .stats .fixed { color: #00ff88; }
+        .stats .remaining { color: #e74c3c; }
+        .duplicate-note { font-size: 12px; color: #888; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>FoodBooks 이미지 URL 수집 도구</h1>
+    <p class="subtitle">불일치 이미지를 올바른 이미지로 교체하세요 (같은 음식은 자동으로 모든 항목에 적용됨)</p>
+
+    <div class="stats">
+        <span class="remaining">남은 음식: <strong id="remaining">0</strong>개</span>
+        <span class="fixed">완료: <strong id="fixed">0</strong>개</span>
+    </div>
+
+    <div class="instructions">
+        <h3>사용 방법</h3>
+        <ol>
+            <li>각 음식의 검색 링크(Pixabay, Pexels, Unsplash)를 클릭하여 적절한 이미지를 찾습니다</li>
+            <li>이미지를 선택한 후 <strong>이미지 URL을 복사</strong>합니다 (이미지 우클릭 > 이미지 주소 복사)</li>
+            <li>URL 입력란에 붙여넣기하고 "적용" 버튼을 클릭합니다</li>
+            <li>모든 항목 완료 후 "수정 코드 생성" 버튼을 클릭합니다</li>
+        </ol>
+    </div>
+
+    <div class="food-list" id="foodList"></div>
+
+    <button class="generate-btn" onclick="generateCode()">수정 코드 생성</button>
+
+    <div class="output" id="output">
+        <h3>생성된 수정 코드</h3>
+        <p style="color: #888; margin-bottom: 10px;">아래 코드를 복사하여 Claude에게 전달하면 seed-data.js를 자동으로 수정합니다:</p>
+        <pre id="codeOutput"></pre>
+        <button class="copy-btn" onclick="copyCode()">코드 복사</button>
+    </div>
+
+    <script>
+        // 수정이 필요한 음식 목록 (중복 제거 후 새 라인 번호)
+        const foodGroups = [
+            {
+                title: '짜장면',
+                line: 422,
+                currentImage: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=800',
+                issue: '미역국 이미지 사용 중',
+                searchTerms: 'jajangmyeon black bean noodles'
+            },
+            {
+                title: '탕수육',
+                line: 487,
+                currentImage: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800',
+                issue: '불고기 이미지 사용 중',
+                searchTerms: 'tangsuyuk sweet sour pork crispy'
+            },
+            {
+                title: '볶음밥',
+                line: 521,
+                currentImage: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800',
+                issue: '다른 음식 이미지 사용 중',
+                searchTerms: 'korean fried rice bokkeumbap egg'
+            },
+            {
+                title: '오야코동',
+                line: 608,
+                currentImage: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800',
+                issue: '카레라이스와 동일 이미지',
+                searchTerms: 'oyakodon chicken egg rice bowl'
+            },
+            {
+                title: '일본식 카레라이스',
+                line: 641,
+                currentImage: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800',
+                issue: '오야코동과 동일 이미지',
+                searchTerms: 'japanese curry rice katsu'
+            },
+            {
+                title: '토마토 미트소스 파스타',
+                line: 761,
+                currentImage: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800',
+                issue: '계란말이 이미지 사용 중',
+                searchTerms: 'spaghetti bolognese meat sauce'
+            },
+            {
+                title: '팟타이',
+                line: 1173,
+                currentImage: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=800',
+                issue: '김치찌개 이미지 사용 중',
+                searchTerms: 'pad thai noodles shrimp'
+            },
+            {
+                title: '나시고랭',
+                line: 1207,
+                currentImage: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800',
+                issue: '계란말이 이미지 사용 중',
+                searchTerms: 'nasi goreng indonesian fried rice'
+            },
+            {
+                title: '김밥',
+                line: 1442,
+                currentImage: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800',
+                issue: '제육볶음 이미지 사용 중',
+                searchTerms: 'kimbap gimbap korean rice roll seaweed'
+            },
+            {
+                title: '동파육',
+                line: 1931,
+                currentImage: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800',
+                issue: '다른 중식 이미지 사용 중',
+                searchTerms: 'dongpo pork braised belly chinese'
+            },
+            {
+                title: '참치김밥',
+                line: 2163,
+                currentImage: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=800',
+                issue: '비빔밥 이미지 사용 중',
+                searchTerms: 'tuna kimbap gimbap korean'
+            },
+            {
+                title: '쫄면',
+                line: 2191,
+                currentImage: 'https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=800',
+                issue: '돈코츠 라멘 이미지 사용 중',
+                searchTerms: 'jjolmyeon korean spicy chewy noodles'
+            }
+        ];
+
+        const foodList = document.getElementById('foodList');
+        const newUrls = {};
+
+        function updateStats() {
+            const fixed = Object.keys(newUrls).filter(k => newUrls[k]).length;
+            const remaining = foodGroups.length - fixed;
+            document.getElementById('remaining').textContent = remaining;
+            document.getElementById('fixed').textContent = fixed;
+        }
+
+        function renderFoods() {
+            foodList.innerHTML = '';
+            foodGroups.forEach((food, idx) => {
+                const hasNewUrl = newUrls[idx];
+                const div = document.createElement('div');
+                div.className = `food-item ${hasNewUrl ? 'fixed' : ''}`;
+
+                const linesText = `Line: ${food.line}`;
+
+                div.innerHTML = `
+                    <div class="current-image ${hasNewUrl ? 'new-img' : ''}">
+                        <img src="${hasNewUrl || food.currentImage}" alt="${food.title}" onerror="this.src='https://via.placeholder.com/200x150?text=Error'">
+                        <div class="label">${hasNewUrl ? '새 이미지' : '현재 (잘못된) 이미지'}</div>
+                    </div>
+                    <div class="food-info">
+                        <div class="food-name">${food.title}</div>
+                        <div class="food-lines">${linesText}</div>
+                        <div class="issue">${food.issue}</div>
+                        <div class="search-links">
+                            <a href="https://pixabay.com/images/search/${encodeURIComponent(food.searchTerms)}/" target="_blank">Pixabay</a>
+                            <a href="https://www.pexels.com/search/${encodeURIComponent(food.searchTerms)}/" target="_blank">Pexels</a>
+                            <a href="https://unsplash.com/s/photos/${encodeURIComponent(food.searchTerms.replace(/ /g, '-'))}" target="_blank">Unsplash</a>
+                        </div>
+                        <div class="url-input">
+                            <input type="text" id="url-${idx}" placeholder="새 이미지 URL을 붙여넣으세요..." value="${newUrls[idx] || ''}" onkeypress="if(event.key==='Enter')applyUrl(${idx})">
+                            <button onclick="applyUrl(${idx})">적용</button>
+                        </div>
+                        <div class="preview" id="preview-${idx}"></div>
+                    </div>
+                `;
+                foodList.appendChild(div);
+            });
+            updateStats();
+        }
+
+        function applyUrl(idx) {
+            const input = document.getElementById(`url-${idx}`);
+            const url = input.value.trim();
+            if (url) {
+                newUrls[idx] = url;
+                renderFoods();
+            }
+        }
+
+        function generateCode() {
+            const output = document.getElementById('output');
+            const codeOutput = document.getElementById('codeOutput');
+
+            const updates = [];
+            foodGroups.forEach((food, idx) => {
+                if (newUrls[idx]) {
+                    updates.push({ title: food.title, line: food.line, url: newUrls[idx] });
+                }
+            });
+
+            if (updates.length === 0) {
+                codeOutput.textContent = '// 아직 수정된 이미지가 없습니다.\n// 위에서 새 이미지 URL을 입력해주세요.';
+            } else {
+                let code = '다음 이미지 URL들을 seed-data.js에 적용해주세요:\n\n';
+                updates.forEach(u => {
+                    code += `${u.title} (Line ${u.line}): ${u.url}\n`;
+                });
+                codeOutput.textContent = code;
+            }
+
+            output.style.display = 'block';
+            output.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyCode() {
+            const code = document.getElementById('codeOutput').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('코드가 클립보드에 복사되었습니다!');
+            });
+        }
+
+        // 초기 렌더링
+        renderFoods();
+    </script>
+</body>
+</html>

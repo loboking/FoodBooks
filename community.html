@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBooks Community - 레시피 공유 게시판</title>
+    <link rel="stylesheet" href="css/community.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <a href="index.html" class="back-link">← FoodBooks</a>
+                <h1 class="logo">Community</h1>
+                <button class="write-btn" onclick="Community.openWriteModal()">+ 글쓰기</button>
+            </div>
+        </header>
+
+        <!-- 검색/필터 -->
+        <section class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="레시피 검색..." oninput="Community.search(this.value)">
+            </div>
+            <div class="filter-tags">
+                <button class="tag active" data-category="all" onclick="Community.filterByCategory('all')">전체</button>
+                <button class="tag" data-category="korean" onclick="Community.filterByCategory('korean')">한식</button>
+                <button class="tag" data-category="chinese" onclick="Community.filterByCategory('chinese')">중식</button>
+                <button class="tag" data-category="japanese" onclick="Community.filterByCategory('japanese')">일식</button>
+                <button class="tag" data-category="western" onclick="Community.filterByCategory('western')">양식</button>
+                <button class="tag" data-category="dessert" onclick="Community.filterByCategory('dessert')">디저트</button>
+            </div>
+        </section>
+
+        <!-- 정렬 옵션 -->
+        <section class="sort-section">
+            <span class="post-count">총 <strong id="postCount">0</strong>개의 레시피</span>
+            <select id="sortSelect" onchange="Community.sort(this.value)">
+                <option value="latest">최신순</option>
+                <option value="popular">인기순</option>
+                <option value="views">조회순</option>
+            </select>
+        </section>
+
+        <!-- 게시판 목록 -->
+        <main class="post-list" id="postList">
+            <!-- 동적으로 로드 -->
+        </main>
+
+        <!-- 로딩 -->
+        <div class="loading hidden" id="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- 빈 상태 -->
+        <div class="empty-state hidden" id="emptyState">
+            <div class="empty-icon">📝</div>
+            <p>아직 등록된 레시피가 없습니다</p>
+            <button class="btn-primary" onclick="Community.openWriteModal()">첫 레시피 등록하기</button>
+        </div>
+    </div>
+
+    <!-- 글쓰기 모달 -->
+    <div class="modal-overlay hidden" id="writeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>레시피 등록</h2>
+                <button class="close-btn" onclick="Community.closeWriteModal()">×</button>
+            </div>
+            <form class="modal-body" id="recipeForm" onsubmit="Community.submitRecipe(event)">
+                <div class="form-group">
+                    <label>레시피 제목 *</label>
+                    <input type="text" id="recipeTitle" required placeholder="예: 엄마표 김치찌개">
+                </div>
+
+                <div class="form-group">
+                    <label>카테고리 *</label>
+                    <select id="recipeCategory" required>
+                        <option value="">선택하세요</option>
+                        <option value="korean">한식</option>
+                        <option value="chinese">중식</option>
+                        <option value="japanese">일식</option>
+                        <option value="western">양식</option>
+                        <option value="dessert">디저트</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>대표 이미지 URL</label>
+                    <input type="url" id="recipeImage" placeholder="https://...">
+                    <small>Unsplash 등에서 이미지 URL을 복사해 붙여넣으세요</small>
+                </div>
+
+                <div class="form-group">
+                    <label>소개 *</label>
+                    <textarea id="recipeDescription" required rows="2" placeholder="레시피를 간단히 소개해주세요"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>재료 *</label>
+                    <textarea id="recipeIngredients" required rows="4" placeholder="- 돼지고기 300g&#10;- 김치 200g&#10;- 두부 1모"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>조리 방법 *</label>
+                    <textarea id="recipeSteps" required rows="6" placeholder="1. 돼지고기를 먼저 볶아주세요&#10;2. 김치를 넣고 함께 볶습니다&#10;3. 물을 붓고 끓여주세요"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>작성자</label>
+                    <input type="text" id="authorName" placeholder="닉네임 (선택)">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="Community.closeWriteModal()">취소</button>
+                    <button type="submit" class="btn-primary">등록하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 상세보기 모달 -->
+    <div class="modal-overlay hidden" id="detailModal">
+        <div class="modal modal-large">
+            <div class="modal-header">
+                <h2 id="detailTitle">레시피 제목</h2>
+                <button class="close-btn" onclick="Community.closeDetailModal()">×</button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- 동적으로 로드 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 토스트 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAUg3760QqRY2uQbcgJ7ClJ_0N4YnK6Z94",
+            authDomain: "foodbooks-community.firebaseapp.com",
+            projectId: "foodbooks-community",
+            storageBucket: "foodbooks-community.firebasestorage.app",
+            messagingSenderId: "869188183762",
+            appId: "1:869188183762:web:40b295cbc68777338f6f0b",
+            measurementId: "G-PKDQEFT0LV"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Firebase를 전역으로 사용
+        window.firebaseDB = db;
+        window.firebaseCollection = collection;
+        window.firebaseAddDoc = addDoc;
+        window.firebaseGetDocs = getDocs;
+        window.firebaseUpdateDoc = updateDoc;
+        window.firebaseDoc = doc;
+        window.firebaseDeleteDoc = deleteDoc;
+        window.firebaseQuery = query;
+        window.firebaseOrderBy = orderBy;
+        window.firebaseOnSnapshot = onSnapshot;
+
+        // Firebase 준비 완료 후 Community 초기화
+        window.firebaseReady = true;
+        if (window.Community) {
+            Community.init();
+        }
+    </script>
+    <script src="js/community.js"></script>
+</body>
+</html>
