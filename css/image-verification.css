@@ -1,0 +1,167 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+        h1 { text-align: center; margin-bottom: 10px; color: #333; }
+        .stats { text-align: center; margin-bottom: 20px; color: #666; }
+        .stats span { margin: 0 10px; }
+        .stats .error { color: #e74c3c; font-weight: bold; }
+        .stats .warning { color: #f39c12; font-weight: bold; }
+        .filters { text-align: center; margin-bottom: 20px; }
+        .filters button { padding: 8px 16px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        .filters .all { background: #3498db; color: white; }
+        .filters .duplicates { background: #e74c3c; color: white; }
+        .filters .mismatched { background: #f39c12; color: white; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+        .card.duplicate { border: 3px solid #e74c3c; }
+        .card.mismatch { border: 3px solid #f39c12; }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .card-title { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .card-line { font-size: 12px; color: #999; margin-bottom: 5px; }
+        .card-badge { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; margin-right: 5px; }
+        .badge-duplicate { background: #e74c3c; color: white; }
+        .badge-mismatch { background: #f39c12; color: white; }
+        .badge-info { background: #3498db; color: white; }
+        .duplicate-group { font-size: 12px; color: #e74c3c; margin-top: 5px; }
+        .hidden { display: none !important; }
+        .image-url { font-size: 10px; color: #aaa; word-break: break-all; margin-top: 5px; }
+.verify-button {
+    background: #28a745;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    width: 100%;
+    transition: background 0.2s ease;
+}
+
+.verify-button:hover {
+    background: #218838;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 100; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 80%; /* Could be responsive */
+    max-width: 900px;
+    position: relative;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-image {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    background-color: #eee; /* Placeholder background */
+}
+
+#currentImageContainer, #imageSearchContainer {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+#imageSearchInput {
+    width: calc(100% - 80px); /* Adjust width for button */
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#imageSearchButton {
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#searchResults {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+    max-height: 300px; /* Limit height for scroll */
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#searchResults img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+#searchResults img.selected {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+.modal-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.modal-actions .save-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.modal-actions .cancel-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}

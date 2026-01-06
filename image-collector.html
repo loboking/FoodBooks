@@ -3,68 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodBooks - 이미지 URL 수집 도구</title>
+    <title>FoodBooks - 이미지 검증 도구 v2</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #eee; padding: 20px; min-height: 100vh; }
         h1 { text-align: center; margin-bottom: 10px; color: #00d9ff; }
         .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
-        .instructions { background: #16213e; padding: 20px; border-radius: 10px; margin-bottom: 30px; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .instructions h3 { color: #00d9ff; margin-bottom: 10px; }
-        .instructions ol { margin-left: 20px; line-height: 1.8; }
-        .food-list { display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; }
-        .food-item { background: #16213e; border-radius: 10px; padding: 20px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
-        .food-item.fixed { border: 2px solid #00ff88; }
-        .current-image { width: 200px; }
-        .current-image img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #e74c3c; }
-        .current-image.new-img img { border-color: #00ff88; }
-        .current-image .label { font-size: 12px; color: #e74c3c; margin-top: 5px; text-align: center; }
-        .current-image.new-img .label { color: #00ff88; }
-        .food-info { display: flex; flex-direction: column; gap: 10px; }
-        .food-name { font-size: 22px; font-weight: bold; color: #fff; }
-        .food-lines { font-size: 13px; color: #00d9ff; background: rgba(0, 217, 255, 0.1); padding: 8px 12px; border-radius: 5px; }
-        .issue { font-size: 14px; color: #f39c12; background: rgba(243, 156, 18, 0.1); padding: 5px 10px; border-radius: 5px; display: inline-block; }
-        .search-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .search-links a { padding: 8px 15px; background: #0f3460; color: #00d9ff; text-decoration: none; border-radius: 5px; font-size: 13px; }
-        .search-links a:hover { background: #00d9ff; color: #1a1a2e; }
-        .url-input { display: flex; gap: 10px; margin-top: 10px; }
-        .url-input input { flex: 1; padding: 12px; border: 2px solid #0f3460; border-radius: 5px; background: #0f3460; color: #fff; font-size: 14px; }
-        .url-input input:focus { outline: none; border-color: #00d9ff; }
-        .url-input input.valid { border-color: #00ff88; }
-        .url-input button { padding: 12px 25px; background: #00d9ff; color: #1a1a2e; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .url-input button:hover { background: #00ffcc; }
-        .preview { margin-top: 10px; }
-        .preview img { max-width: 200px; max-height: 120px; border-radius: 5px; border: 2px solid #00ff88; }
-        .generate-btn { display: block; width: 100%; max-width: 400px; margin: 30px auto; padding: 15px 30px; background: linear-gradient(135deg, #00d9ff, #00ff88); color: #1a1a2e; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .generate-btn:hover { transform: scale(1.02); }
-        .output { background: #0f3460; padding: 20px; border-radius: 10px; margin-top: 20px; max-width: 900px; margin-left: auto; margin-right: auto; display: none; }
-        .output h3 { color: #00d9ff; margin-bottom: 15px; }
-        .output pre { background: #1a1a2e; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 12px; color: #00ff88; white-space: pre-wrap; word-break: break-all; }
-        .copy-btn { padding: 10px 20px; background: #00ff88; color: #1a1a2e; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-        .stats { text-align: center; margin-bottom: 20px; color: #888; }
-        .stats span { margin: 0 15px; }
-        .stats .fixed { color: #00ff88; }
+
+        /* Stats */
+        .stats { text-align: center; margin-bottom: 20px; padding: 15px; background: #16213e; border-radius: 10px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .stats span { margin: 0 20px; font-size: 16px; }
         .stats .remaining { color: #e74c3c; }
-        .duplicate-note { font-size: 12px; color: #888; margin-top: 5px; }
+        .stats .fixed { color: #00ff88; }
+
+        /* Food List */
+        .food-list { display: flex; flex-direction: column; gap: 30px; max-width: 1200px; margin: 0 auto; }
+
+        /* Food Item Card */
+        .food-item { background: #16213e; border-radius: 15px; padding: 25px; border: 2px solid transparent; transition: all 0.3s; }
+        .food-item.completed { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); }
+
+        /* Header with food name */
+        .food-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #0f3460; }
+        .food-name { font-size: 28px; font-weight: bold; color: #00d9ff; }
+        .food-badge { padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .badge-pending { background: #e74c3c; color: white; }
+        .badge-completed { background: #00ff88; color: #1a1a2e; }
+
+        /* Issue description */
+        .issue-desc { background: rgba(243, 156, 18, 0.15); color: #f39c12; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
+
+        /* Image comparison area */
+        .image-comparison { display: grid; grid-template-columns: 1fr 80px 1fr; gap: 20px; align-items: center; margin-bottom: 20px; }
+
+        .image-box { text-align: center; }
+        .image-box-label { font-size: 14px; color: #888; margin-bottom: 10px; font-weight: bold; }
+        .image-box img { width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; border: 3px solid #0f3460; }
+        .image-box.current img { border-color: #e74c3c; }
+        .image-box.new img { border-color: #00ff88; }
+        .image-box.new.empty img { border-color: #0f3460; opacity: 0.5; }
+
+        .arrow { font-size: 40px; color: #00d9ff; text-align: center; }
+
+        /* Candidate images */
+        .candidates-section { margin-top: 20px; }
+        .candidates-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .candidates-title { font-size: 16px; color: #00d9ff; }
+        .search-btn { padding: 8px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        .search-btn:hover { background: #2980b9; }
+        .search-btn:disabled { background: #555; cursor: not-allowed; }
+
+        /* Loading indicator */
+        .loading { display: none; text-align: center; padding: 30px; color: #00d9ff; }
+        .loading.active { display: block; }
+        .spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid #0f3460; border-top-color: #00d9ff; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Candidate grid */
+        .candidates-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+        .candidate { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; border: 3px solid transparent; transition: all 0.2s; }
+        .candidate:hover { transform: scale(1.05); border-color: #00d9ff; }
+        .candidate.selected { border-color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+        .candidate img { width: 100%; height: 120px; object-fit: cover; display: block; }
+        .candidate .check { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; background: #00ff88; border-radius: 50%; display: none; align-items: center; justify-content: center; color: #1a1a2e; font-weight: bold; }
+        .candidate.selected .check { display: flex; }
+        .candidate .source { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; padding: 3px 5px; text-align: center; }
+
+        /* Manual URL input */
+        .manual-input { margin-top: 15px; display: flex; gap: 10px; }
+        .manual-input input { flex: 1; padding: 12px; background: #0f3460; border: 2px solid #0f3460; border-radius: 8px; color: #fff; font-size: 14px; }
+        .manual-input input:focus { outline: none; border-color: #00d9ff; }
+        .manual-input button { padding: 12px 25px; background: #00d9ff; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        /* Confirmation checkbox */
+        .confirm-section { margin-top: 20px; padding: 15px; background: rgba(0, 255, 136, 0.1); border-radius: 10px; display: none; }
+        .confirm-section.visible { display: block; }
+        .confirm-label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 16px; }
+        .confirm-label input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+        .confirm-label .food-name-confirm { color: #00ff88; font-weight: bold; }
+
+        /* Generate button */
+        .generate-btn { display: block; width: 100%; max-width: 500px; margin: 40px auto; padding: 18px 30px; background: linear-gradient(135deg, #00d9ff, #00ff88); color: #1a1a2e; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        .generate-btn:hover { transform: scale(1.02); }
+
+        /* Output */
+        .output { background: #0f3460; padding: 25px; border-radius: 15px; margin-top: 30px; max-width: 1200px; margin-left: auto; margin-right: auto; display: none; }
+        .output h3 { color: #00d9ff; margin-bottom: 15px; }
+        .output pre { background: #1a1a2e; padding: 20px; border-radius: 10px; overflow-x: auto; font-size: 13px; color: #00ff88; white-space: pre-wrap; word-break: break-all; max-height: 400px; overflow-y: auto; }
+        .copy-btn { padding: 12px 25px; background: #00ff88; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px; font-weight: bold; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .candidates-grid { grid-template-columns: repeat(3, 1fr); }
+            .image-comparison { grid-template-columns: 1fr; }
+            .arrow { transform: rotate(90deg); }
+        }
     </style>
 </head>
 <body>
-    <h1>FoodBooks 이미지 URL 수집 도구</h1>
-    <p class="subtitle">불일치 이미지를 올바른 이미지로 교체하세요 (같은 음식은 자동으로 모든 항목에 적용됨)</p>
+    <h1>FoodBooks 이미지 검증 도구 v2</h1>
+    <p class="subtitle">후보 이미지 중에서 올바른 이미지를 선택하세요</p>
 
     <div class="stats">
-        <span class="remaining">남은 음식: <strong id="remaining">0</strong>개</span>
+        <span class="remaining">남은 항목: <strong id="remaining">0</strong>개</span>
         <span class="fixed">완료: <strong id="fixed">0</strong>개</span>
-    </div>
-
-    <div class="instructions">
-        <h3>사용 방법</h3>
-        <ol>
-            <li>각 음식의 검색 링크(Pixabay, Pexels, Unsplash)를 클릭하여 적절한 이미지를 찾습니다</li>
-            <li>이미지를 선택한 후 <strong>이미지 URL을 복사</strong>합니다 (이미지 우클릭 > 이미지 주소 복사)</li>
-            <li>URL 입력란에 붙여넣기하고 "적용" 버튼을 클릭합니다</li>
-            <li>모든 항목 완료 후 "수정 코드 생성" 버튼을 클릭합니다</li>
-        </ol>
     </div>
 
     <div class="food-list" id="foodList"></div>
@@ -73,181 +115,220 @@
 
     <div class="output" id="output">
         <h3>생성된 수정 코드</h3>
-        <p style="color: #888; margin-bottom: 10px;">아래 코드를 복사하여 Claude에게 전달하면 seed-data.js를 자동으로 수정합니다:</p>
+        <p style="color: #888; margin-bottom: 15px;">아래 코드를 복사하여 Claude에게 전달하면 seed-data.js를 자동으로 수정합니다:</p>
         <pre id="codeOutput"></pre>
         <button class="copy-btn" onclick="copyCode()">코드 복사</button>
     </div>
 
     <script>
-        // 수정이 필요한 음식 목록 (중복 제거 후 새 라인 번호)
+        // 수정이 필요한 음식 목록
         const foodGroups = [
-            {
-                title: '짜장면',
-                line: 422,
-                currentImage: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=800',
-                issue: '미역국 이미지 사용 중',
-                searchTerms: 'jajangmyeon black bean noodles'
-            },
-            {
-                title: '탕수육',
-                line: 487,
-                currentImage: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800',
-                issue: '불고기 이미지 사용 중',
-                searchTerms: 'tangsuyuk sweet sour pork crispy'
-            },
-            {
-                title: '볶음밥',
-                line: 521,
-                currentImage: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800',
-                issue: '다른 음식 이미지 사용 중',
-                searchTerms: 'korean fried rice bokkeumbap egg'
-            },
-            {
-                title: '오야코동',
-                line: 608,
-                currentImage: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800',
-                issue: '카레라이스와 동일 이미지',
-                searchTerms: 'oyakodon chicken egg rice bowl'
-            },
-            {
-                title: '일본식 카레라이스',
-                line: 641,
-                currentImage: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800',
-                issue: '오야코동과 동일 이미지',
-                searchTerms: 'japanese curry rice katsu'
-            },
-            {
-                title: '토마토 미트소스 파스타',
-                line: 761,
-                currentImage: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800',
-                issue: '계란말이 이미지 사용 중',
-                searchTerms: 'spaghetti bolognese meat sauce'
-            },
-            {
-                title: '팟타이',
-                line: 1173,
-                currentImage: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=800',
-                issue: '김치찌개 이미지 사용 중',
-                searchTerms: 'pad thai noodles shrimp'
-            },
-            {
-                title: '나시고랭',
-                line: 1207,
-                currentImage: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800',
-                issue: '계란말이 이미지 사용 중',
-                searchTerms: 'nasi goreng indonesian fried rice'
-            },
-            {
-                title: '김밥',
-                line: 1442,
-                currentImage: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800',
-                issue: '제육볶음 이미지 사용 중',
-                searchTerms: 'kimbap gimbap korean rice roll seaweed'
-            },
-            {
-                title: '동파육',
-                line: 1931,
-                currentImage: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800',
-                issue: '다른 중식 이미지 사용 중',
-                searchTerms: 'dongpo pork braised belly chinese'
-            },
-            {
-                title: '참치김밥',
-                line: 2163,
-                currentImage: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=800',
-                issue: '비빔밥 이미지 사용 중',
-                searchTerms: 'tuna kimbap gimbap korean'
-            },
-            {
-                title: '쫄면',
-                line: 2191,
-                currentImage: 'https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=800',
-                issue: '돈코츠 라멘 이미지 사용 중',
-                searchTerms: 'jjolmyeon korean spicy chewy noodles'
-            }
+            { title: '짜장면', line: 422, currentImage: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=800', issue: '미역국 이미지 사용 중', searchTerms: 'jajangmyeon black bean noodles korean' },
+            { title: '탕수육', line: 487, currentImage: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800', issue: '불고기 이미지 사용 중', searchTerms: 'tangsuyuk sweet sour pork chinese' },
+            { title: '볶음밥', line: 521, currentImage: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800', issue: '다른 음식 이미지 사용 중', searchTerms: 'fried rice asian egg' },
+            { title: '오야코동', line: 608, currentImage: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800', issue: '카레라이스와 동일 이미지', searchTerms: 'oyakodon chicken egg rice bowl japanese' },
+            { title: '일본식 카레라이스', line: 641, currentImage: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800', issue: '오야코동과 동일 이미지', searchTerms: 'japanese curry rice katsu' },
+            { title: '토마토 미트소스 파스타', line: 761, currentImage: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800', issue: '계란말이 이미지 사용 중', searchTerms: 'spaghetti bolognese meat sauce pasta' },
+            { title: '팟타이', line: 1173, currentImage: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=800', issue: '김치찌개 이미지 사용 중', searchTerms: 'pad thai noodles shrimp thai' },
+            { title: '나시고랭', line: 1207, currentImage: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800', issue: '계란말이 이미지 사용 중', searchTerms: 'nasi goreng indonesian fried rice' },
+            { title: '김밥', line: 1442, currentImage: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800', issue: '제육볶음 이미지 사용 중', searchTerms: 'kimbap gimbap korean rice roll seaweed' },
+            { title: '동파육', line: 1931, currentImage: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800', issue: '다른 중식 이미지 사용 중', searchTerms: 'dongpo pork braised belly chinese' },
+            { title: '참치김밥', line: 2163, currentImage: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=800', issue: '비빔밥 이미지 사용 중', searchTerms: 'tuna kimbap gimbap korean roll' },
+            { title: '쫄면', line: 2191, currentImage: 'https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=800', issue: '돈코츠 라멘 이미지 사용 중', searchTerms: 'jjolmyeon korean spicy chewy noodles cold' }
         ];
 
-        const foodList = document.getElementById('foodList');
-        const newUrls = {}; // Stores { url: '...', confirmed: true/false }
+        // 상태 저장
+        const state = {};
+        foodGroups.forEach((_, idx) => {
+            state[idx] = { selectedUrl: null, confirmed: false, candidates: [] };
+        });
 
-        function updateStats() {
-            const confirmedCount = Object.keys(newUrls).filter(k => newUrls[k] && newUrls[k].confirmed).length;
-            const remaining = foodGroups.length - confirmedCount;
-            document.getElementById('remaining').textContent = remaining;
-            document.getElementById('fixed').textContent = confirmedCount;
+        // Unsplash API (데모용 - 실제로는 API 키 필요)
+        const UNSPLASH_ACCESS_KEY = 'demo'; // 실제 키로 교체 필요
+
+        // 이미지 검색 함수 (Unsplash API 또는 대체 소스)
+        async function searchImages(query, count = 5) {
+            // Unsplash Source API (API 키 없이 사용 가능한 대안)
+            const images = [];
+            const sources = ['unsplash', 'picsum'];
+
+            // Unsplash Source로 이미지 생성
+            for (let i = 0; i < count; i++) {
+                const seed = Math.random().toString(36).substring(7);
+                images.push({
+                    url: `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}&sig=${seed}`,
+                    source: 'Unsplash'
+                });
+            }
+
+            return images;
         }
 
-        function renderFoods() {
-            foodList.innerHTML = '';
-            foodGroups.forEach((food, idx) => {
-                const hasNewUrl = newUrls[idx];
-                const div = document.createElement('div');
-                div.className = `food-item ${hasNewUrl ? 'fixed' : ''}`;
+        // 통계 업데이트
+        function updateStats() {
+            const confirmed = Object.values(state).filter(s => s.confirmed).length;
+            document.getElementById('remaining').textContent = foodGroups.length - confirmed;
+            document.getElementById('fixed').textContent = confirmed;
+        }
 
-                const linesText = `Line: ${food.line}`;
+        // 음식 항목 렌더링
+        function renderFoodItem(food, idx) {
+            const s = state[idx];
+            const isCompleted = s.confirmed;
 
-                div.innerHTML = `
-                    <div class="current-image ${hasNewUrl && newUrls[idx].confirmed ? 'new-img' : ''}">
-                        <img src="${(hasNewUrl ? newUrls[idx].url : '') || food.currentImage}" alt="${food.title}" onerror="this.src='https://via.placeholder.com/200x150?text=Error'">
-                        <div class="label">${(hasNewUrl && newUrls[idx].confirmed) ? '새 이미지 (확인됨)' : (hasNewUrl ? '새 이미지 (미확인)' : '현재 (잘못된) 이미지')}</div>
-                    </div>
-                    <div class="food-info">
+            return `
+                <div class="food-item ${isCompleted ? 'completed' : ''}" id="food-${idx}">
+                    <div class="food-header">
                         <div class="food-name">${food.title}</div>
-                        <div class="food-lines">${linesText}</div>
-                        <div class="issue">${food.issue}</div>
-                        <div class="search-links">
-                            <a href="https://pixabay.com/images/search/${encodeURIComponent(food.searchTerms)}/" target="_blank">Pixabay</a>
-                            <a href="https://www.pexels.com/search/${encodeURIComponent(food.searchTerms)}/" target="_blank">Pexels</a>
-                            <a href="https://unsplash.com/s/photos/${encodeURIComponent(food.searchTerms.replace(/ /g, '-'))}" target="_blank">Unsplash</a>
+                        <span class="food-badge ${isCompleted ? 'badge-completed' : 'badge-pending'}">
+                            ${isCompleted ? '완료' : '검증 필요'}
+                        </span>
+                    </div>
+
+                    <div class="issue-desc">${food.issue}</div>
+
+                    <div class="image-comparison">
+                        <div class="image-box current">
+                            <div class="image-box-label">현재 (잘못된) 이미지</div>
+                            <img src="${food.currentImage}" alt="현재 이미지" onerror="this.src='https://via.placeholder.com/300x200?text=Error'">
                         </div>
-                        <div class="url-input">
-                            <input type="text" id="url-${idx}" placeholder="새 이미지 URL을 붙여넣으세요..." value="${(hasNewUrl ? newUrls[idx].url : '') || ''}" onkeypress="if(event.key==='Enter')applyUrl(${idx})">
-                            <button onclick="applyUrl(${idx})">적용</button>
-                        </div>
-                        <div class="preview" id="preview-${idx}">
-                            ${hasNewUrl ? `<img src="${newUrls[idx].url}" alt="미리보기" onerror="this.src='https://via.placeholder.com/200x120?text=URL+오류'">
-                                <label><input type="checkbox" id="confirm-${idx}" ${newUrls[idx].confirmed ? 'checked' : ''} onclick="toggleConfirm(${idx})"> 이미지 확인됨</label>` : ''}
+                        <div class="arrow">→</div>
+                        <div class="image-box new ${s.selectedUrl ? '' : 'empty'}">
+                            <div class="image-box-label">새 이미지</div>
+                            <img src="${s.selectedUrl || 'https://via.placeholder.com/300x200?text=선택해주세요'}" alt="새 이미지" onerror="this.src='https://via.placeholder.com/300x200?text=Error'">
                         </div>
                     </div>
-                `;
-                foodList.appendChild(div);
-            });
+
+                    <div class="candidates-section">
+                        <div class="candidates-header">
+                            <span class="candidates-title">후보 이미지 (5개 중 선택)</span>
+                            <button class="search-btn" onclick="loadCandidates(${idx})" id="search-btn-${idx}">
+                                이미지 검색
+                            </button>
+                        </div>
+                        <div class="loading" id="loading-${idx}">
+                            <span class="spinner"></span> 이미지 검색 중...
+                        </div>
+                        <div class="candidates-grid" id="candidates-${idx}">
+                            ${s.candidates.length > 0 ? renderCandidates(idx) : '<p style="color:#888; grid-column: 1/-1; text-align:center;">검색 버튼을 클릭하여 후보 이미지를 로드하세요</p>'}
+                        </div>
+                    </div>
+
+                    <div class="manual-input">
+                        <input type="text" id="manual-url-${idx}" placeholder="또는 직접 이미지 URL을 입력하세요..." value="${s.selectedUrl || ''}">
+                        <button onclick="applyManualUrl(${idx})">적용</button>
+                    </div>
+
+                    <div class="confirm-section ${s.selectedUrl ? 'visible' : ''}" id="confirm-${idx}">
+                        <label class="confirm-label">
+                            <input type="checkbox" ${s.confirmed ? 'checked' : ''} onchange="toggleConfirm(${idx}, this.checked)">
+                            이 이미지는 <span class="food-name-confirm">"${food.title}"</span>이(가) 맞습니다
+                        </label>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 후보 이미지 렌더링
+        function renderCandidates(idx) {
+            return state[idx].candidates.map((img, i) => `
+                <div class="candidate ${state[idx].selectedUrl === img.url ? 'selected' : ''}"
+                     onclick="selectCandidate(${idx}, '${img.url}')">
+                    <img src="${img.url}" alt="후보 ${i+1}" onerror="this.src='https://via.placeholder.com/200x120?text=Error'">
+                    <div class="check">✓</div>
+                    <div class="source">${img.source}</div>
+                </div>
+            `).join('');
+        }
+
+        // 후보 이미지 로드
+        async function loadCandidates(idx) {
+            const food = foodGroups[idx];
+            const btn = document.getElementById(`search-btn-${idx}`);
+            const loading = document.getElementById(`loading-${idx}`);
+            const grid = document.getElementById(`candidates-${idx}`);
+
+            btn.disabled = true;
+            btn.textContent = '검색 중...';
+            loading.classList.add('active');
+
+            try {
+                const images = await searchImages(food.searchTerms, 5);
+                state[idx].candidates = images;
+                grid.innerHTML = renderCandidates(idx);
+            } catch (error) {
+                console.error('이미지 검색 실패:', error);
+                grid.innerHTML = '<p style="color:#e74c3c; grid-column: 1/-1; text-align:center;">검색 실패. 직접 URL을 입력해주세요.</p>';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '다시 검색';
+                loading.classList.remove('active');
+            }
+        }
+
+        // 후보 선택
+        function selectCandidate(idx, url) {
+            state[idx].selectedUrl = url;
+            state[idx].confirmed = false;
+            renderAll();
+        }
+
+        // 직접 URL 적용
+        function applyManualUrl(idx) {
+            const input = document.getElementById(`manual-url-${idx}`);
+            const url = input.value.trim();
+            if (url) {
+                state[idx].selectedUrl = url;
+                state[idx].confirmed = false;
+                renderAll();
+            }
+        }
+
+        // 확인 토글
+        function toggleConfirm(idx, checked) {
+            state[idx].confirmed = checked;
+            updateStats();
+            // 해당 항목만 부분 업데이트
+            const item = document.getElementById(`food-${idx}`);
+            if (item) {
+                item.className = `food-item ${checked ? 'completed' : ''}`;
+                const badge = item.querySelector('.food-badge');
+                if (badge) {
+                    badge.className = `food-badge ${checked ? 'badge-completed' : 'badge-pending'}`;
+                    badge.textContent = checked ? '완료' : '검증 필요';
+                }
+            }
+        }
+
+        // 전체 렌더링
+        function renderAll() {
+            const list = document.getElementById('foodList');
+            list.innerHTML = foodGroups.map((food, idx) => renderFoodItem(food, idx)).join('');
             updateStats();
         }
 
-        function applyUrl(idx) {
-            const input = document.getElementById(`url-${idx}`);
-            const url = input.value.trim();
-            if (url) {
-                newUrls[idx] = { url: url, confirmed: false }; // Store URL and unconfirmed status
-                renderFoods();
-            }
-        }
-
-        function toggleConfirm(idx) {
-            if (newUrls[idx]) {
-                newUrls[idx].confirmed = !newUrls[idx].confirmed;
-            }
-            renderFoods();
-        }
-
+        // 코드 생성
         function generateCode() {
             const output = document.getElementById('output');
             const codeOutput = document.getElementById('codeOutput');
 
             const updates = [];
             foodGroups.forEach((food, idx) => {
-                if (newUrls[idx] && newUrls[idx].confirmed) {
-                    updates.push({ title: food.title, line: food.line, url: newUrls[idx].url });
+                if (state[idx].confirmed && state[idx].selectedUrl) {
+                    updates.push({
+                        title: food.title,
+                        line: food.line,
+                        url: state[idx].selectedUrl
+                    });
                 }
             });
 
             if (updates.length === 0) {
-                codeOutput.textContent = '// 아직 수정된 이미지가 없습니다.\n// 위에서 새 이미지 URL을 입력해주세요.';
+                codeOutput.textContent = '// 아직 확인된 이미지가 없습니다.\n// 위에서 이미지를 선택하고 체크박스를 체크해주세요.';
             } else {
-                let code = '다음 이미지 URL들을 seed-data.js에 적용해주세요:\n\n';
+                let code = `다음 ${updates.length}개 이미지 URL들을 seed-data.js에 적용해주세요:\n\n`;
                 updates.forEach(u => {
-                    code += `${u.title} (Line ${u.line}): ${u.url}\n`;
+                    code += `${u.title} (Line ${u.line}):\n${u.url}\n\n`;
                 });
                 codeOutput.textContent = code;
             }
@@ -256,6 +337,7 @@
             output.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // 코드 복사
         function copyCode() {
             const code = document.getElementById('codeOutput').textContent;
             navigator.clipboard.writeText(code).then(() => {
@@ -263,8 +345,8 @@
             });
         }
 
-        // 초기 렌더링
-        renderFoods();
+        // 초기화
+        renderAll();
     </script>
 </body>
 </html>

@@ -4,36 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodBooks - 이미지 검증 페이지</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
-        h1 { text-align: center; margin-bottom: 10px; color: #333; }
-        .stats { text-align: center; margin-bottom: 20px; color: #666; }
-        .stats span { margin: 0 10px; }
-        .stats .error { color: #e74c3c; font-weight: bold; }
-        .stats .warning { color: #f39c12; font-weight: bold; }
-        .filters { text-align: center; margin-bottom: 20px; }
-        .filters button { padding: 8px 16px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
-        .filters .all { background: #3498db; color: white; }
-        .filters .duplicates { background: #e74c3c; color: white; }
-        .filters .mismatched { background: #f39c12; color: white; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
-        .card.duplicate { border: 3px solid #e74c3c; }
-        .card.mismatch { border: 3px solid #f39c12; }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .card-title { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-        .card-line { font-size: 12px; color: #999; margin-bottom: 5px; }
-        .card-badge { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; margin-right: 5px; }
-        .badge-duplicate { background: #e74c3c; color: white; }
-        .badge-mismatch { background: #f39c12; color: white; }
-        .badge-info { background: #3498db; color: white; }
-        .duplicate-group { font-size: 12px; color: #e74c3c; margin-top: 5px; }
-        .hidden { display: none !important; }
-        .image-url { font-size: 10px; color: #aaa; word-break: break-all; margin-top: 5px; }
-    </style>
+    <link rel="stylesheet" href="css/image-verification.css">
 </head>
 <body>
     <h1>FoodBooks 이미지 검증</h1>
@@ -50,116 +21,31 @@
     <div class="grid" id="grid"></div>
 
     <script src="js/seed-data.js"></script>
-    <script>
-        // seed-data.js에서 레시피 데이터 가져오기
-        const foods = SeedData.recipes;
-
-        // 중복 이미지 및 불일치 의심 항목 분석
-        const imageMap = {};
-        const duplicates = new Set();
-
-        // 명백히 불일치하는 조합 (다른 종류의 음식) - 기존의 mismatchedPairs 유지
-        const mismatchedPairs = [
-            { foods: ['짜장면', '미역국'], reason: '짜장면에 미역국 이미지 사용' },
-            { foods: ['탕수육', '불고기'], reason: '탕수육에 불고기 이미지 사용' },
-            { foods: ['팟타이', '김치찌개'], reason: '팟타이에 김치찌개 이미지 사용' },
-            { foods: ['김밥', '제육볶음'], reason: '김밥에 제육볶음 이미지 사용' },
-            { foods: ['나시고랭', '계란말이'], reason: '나시고랭에 계란말이 이미지 사용' },
-            { foods: ['토마토 미트소스 파스타', '계란말이'], reason: '파스타에 계란말이 이미지 사용' },
-            { foods: ['동파육', '오징어볶음'], reason: '동파육에 오징어볶음 이미지 사용' },
-            { foods: ['쫄면', '돈코츠 라멘'], reason: '쫄면에 라멘 이미지 사용' },
-            { foods: ['참치김밥', '비빔밥'], reason: '참치김밥에 비빔밥 이미지 사용' },
-            { foods: ['볶음밥', '계란말이'], reason: '볶음밥에 계란말이 이미지 사용' }
-        ];
-
-        foods.forEach((food, idx) => {
-            const imageId = food.image.split('/').pop().split('?')[0];
-            if (!imageMap[imageId]) {
-                imageMap[imageId] = [];
-            }
-            imageMap[imageId].push({ title: food.title, image: food.image, line: food.line, idx });
-        });
-
-        Object.keys(imageMap).forEach(imageId => {
-            if (imageMap[imageId].length > 1) {
-                imageMap[imageId].forEach(food => {
-                    duplicates.add(food.idx);
-                });
-            }
-        });
-
-        // 불일치 의심 항목 확인
-        const mismatchedFoods = new Set();
-        mismatchedPairs.forEach(pair => {
-            foods.forEach((food, idx) => {
-                // foods 객체가 image 속성만 가지고 있다면 image 필드를 비교하고,
-                // title 속성을 가지고 있다면 title 필드를 비교
-                const foodName = food.title;
-                if (pair.foods.includes(foodName)) {
-                    mismatchedFoods.add(idx);
-                }
-            });
-        });
-
-        // 통계 업데이트
-        document.getElementById('total').textContent = foods.length;
-        document.getElementById('duplicateCount').textContent = duplicates.size;
-        document.getElementById('mismatchCount').textContent = mismatchedFoods.size;
-
-        // 카드 렌더링
-        const grid = document.getElementById('grid');
-
-        foods.forEach((food, idx) => {
-            const isDuplicate = duplicates.has(idx);
-            const isMismatch = mismatchedFoods.has(idx);
-            const imageId = food.image.split('/').pop().split('?')[0];
-            const duplicateGroup = imageMap[imageId];
-
-            const card = document.createElement('div');
-            card.className = `card ${isDuplicate ? 'duplicate' : ''} ${isMismatch ? 'mismatch' : ''}`;
-            card.dataset.type = isDuplicate ? 'duplicate' : (isMismatch ? 'mismatch' : 'normal');
-
-            let badges = '';
-            if (isDuplicate) badges += '<span class="card-badge badge-duplicate">중복</span>';
-            if (isMismatch) badges += '<span class="card-badge badge-mismatch">불일치 의심</span>';
-
-            let duplicateInfo = '';
-            if (isDuplicate && duplicateGroup.length > 1) {
-                const others = duplicateGroup.filter(f => f.idx !== idx).map(f => f.title).join(', ');
-                duplicateInfo = `<div class="duplicate-group">동일 이미지: ${others}</div>`;
-            }
-
-            // food.line은 seed-data.js에는 없으므로, 해당 부분은 수정이 필요
-            // 여기서는 임시로 food.description을 사용하거나, seed-data.js의 recipe 객체에 line 속성을 추가하는 것을 고려해야 함
-            // 현재는 food.line이 foods 객체의 속성으로 직접 정의되어 있지 않으므로, 이 부분을 수정합니다.
-            // 대신 food.description을 사용하도록 변경합니다.
-            card.innerHTML = `
-                <img src="${food.image}" alt="${food.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200?text=Image+Error'">
-                <div class="card-body">
-                    <div class="card-title">${food.title}</div>
-                    <div class="card-line">Description: ${food.description || 'N/A'}</div>
-                    ${badges}
-                    ${duplicateInfo}
-                    <div class="image-url">${food.image}</div>
+    <script src="js/image-verification.js"></script>
+    <!-- Image Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>이미지 검증</h2>
+            <div id="currentImageContainer">
+                <h3>현재 이미지</h3>
+                <img id="modalCurrentImage" src="" alt="Current Image" class="modal-image">
+                <p id="modalCurrentTitle"></p>
+            </div>
+            <div id="imageSearchContainer">
+                <h3>새 이미지 검색</h3>
+                <input type="text" id="imageSearchInput" placeholder="검색어 입력 (예: 짜장면)">
+                <button id="imageSearchButton">검색</button>
+                <div id="searchResults" class="image-grid">
+                    <!-- Search results will be loaded here -->
                 </div>
-            `;
+            </div>
+            <div class="modal-actions">
+                <button id="modalSaveButton" class="save-button">저장</button>
+                <button id="modalCancelButton" class="cancel-button">취소</button>
+            </div>
+        </div>
+    </div>
 
-            grid.appendChild(card);
-        });
-
-        // 필터 기능
-        function filterCards(type) {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                if (type === 'all') {
-                    card.classList.remove('hidden');
-                } else if (type === 'duplicate') {
-                    card.classList.toggle('hidden', card.dataset.type !== 'duplicate');
-                } else if (type === 'mismatch') {
-                    card.classList.toggle('hidden', !card.classList.contains('mismatch'));
-                }
-            });
-        }
-    </script>
 </body>
 </html>
