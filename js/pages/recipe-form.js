@@ -650,6 +650,18 @@ const RecipeFormPage = {
             document.getElementById('recipeTitle')?.focus();
             return;
         }
+        if (title.length < 2) {
+            Utils.showToast('레시피 제목은 2자 이상이어야 합니다.', 'error');
+            document.getElementById('recipeTitle')?.focus();
+            return;
+        }
+
+        if (!this.mainImage) {
+            Utils.showToast('레시피 대표 이미지를 추가해주세요.', 'error');
+            // Optionally, scroll to the image upload section or highlight it
+            document.getElementById('mainImageUpload')?.scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
 
         // 빈 재료/단계 필터링
         const ingredients = this.ingredients.filter(ing => ing.name.trim());
