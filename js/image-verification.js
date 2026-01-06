@@ -147,6 +147,15 @@
 
         let currentFoodIdx = -1; // To keep track of which food item is being verified
 
+        // 파일 업로드 요소
+        const imageFileInput = document.getElementById('imageFileInput');
+        const pixabayLink = document.getElementById('pixabayLink');
+        const pexelsLink = document.getElementById('pexelsLink');
+        const unsplashLink = document.getElementById('unsplashLink');
+
+        let selectedFileUrl = null;
+        let selectedFileName = null;
+
         function openModal(foodIdx) {
             currentFoodIdx = foodIdx;
             const food = foods[foodIdx];
@@ -156,9 +165,46 @@
             modalCurrentTitle.textContent = `현재 이미지: ${food.title}`;
             imageSearchInput.value = food.title; // Pre-fill search input with food title
 
+            // 검색 링크 업데이트
+            const searchTerm = encodeURIComponent(food.title);
+            pixabayLink.href = `https://pixabay.com/images/search/${searchTerm}/`;
+            pexelsLink.href = `https://www.pexels.com/search/${searchTerm}/`;
+            unsplashLink.href = `https://unsplash.com/s/photos/${searchTerm.replace(/%20/g, '-')}`;
+
+            // 파일 입력 초기화
+            imageFileInput.value = '';
+            selectedFileUrl = null;
+            selectedFileName = null;
+
             searchResults.innerHTML = ''; // Clear previous search results
             verificationModal.style.display = 'flex'; // Use flex to center the modal
         }
+
+        // 파일 선택 처리
+        imageFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            selectedFileName = file.name;
+            const localPath = 'images/' + selectedFileName;
+
+            // 미리보기 생성
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                selectedFileUrl = localPath;
+
+                // 검색 결과에 미리보기 추가
+                searchResults.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <img src="${event.target.result}" alt="선택된 파일" class="selected" data-url="${localPath}" style="max-width: 200px; border: 3px solid #27ae60; border-radius: 8px;">
+                        <p style="margin-top: 10px; font-weight: bold; color: #27ae60;">파일 선택됨: ${selectedFileName}</p>
+                        <p style="font-size: 12px; color: #666;">경로: ${localPath}</p>
+                        <p style="font-size: 11px; color: #e74c3c; margin-top: 5px;">⚠️ 이 파일을 images 폴더에 복사해주세요!</p>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        });
 
         function closeModal() {
             verificationModal.style.display = 'none';

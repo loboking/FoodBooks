@@ -34,6 +34,18 @@
             </div>
             <div id="imageSearchContainer">
                 <h3>새 이미지 검색</h3>
+                <div class="search-options">
+                    <div class="search-links" style="margin-bottom: 10px;">
+                        <a id="pixabayLink" href="#" target="_blank" style="margin-right: 10px; padding: 5px 10px; background: #00ab6c; color: white; border-radius: 4px; text-decoration: none;">Pixabay</a>
+                        <a id="pexelsLink" href="#" target="_blank" style="margin-right: 10px; padding: 5px 10px; background: #05a081; color: white; border-radius: 4px; text-decoration: none;">Pexels</a>
+                        <a id="unsplashLink" href="#" target="_blank" style="padding: 5px 10px; background: #000; color: white; border-radius: 4px; text-decoration: none;">Unsplash</a>
+                    </div>
+                    <div class="file-upload" style="margin-bottom: 15px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+                        <label style="font-weight: bold;">파일 직접 등록:</label>
+                        <input type="file" id="imageFileInput" accept="image/*" style="margin-top: 5px;">
+                        <p style="font-size: 11px; color: #666; margin-top: 5px;">다운로드한 이미지를 선택하세요. images 폴더에 복사 필요.</p>
+                    </div>
+                </div>
                 <input type="text" id="imageSearchInput" placeholder="검색어 입력 (예: 짜장면)">
                 <button id="imageSearchButton">검색</button>
                 <div id="searchResults" class="image-grid">
