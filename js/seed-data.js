@@ -16,6 +16,8 @@ const SeedData = {
             cookTime: 25,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '묵은지', amount: '200', unit: 'g', category: 'vegetables' },
                 { name: '돼지고기 앞다리살', amount: '150', unit: 'g', category: 'meat' },
@@ -50,6 +52,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '된장', amount: '2', unit: '큰술', category: 'seasoning' },
                 { name: '애호박', amount: '1/2', unit: '개', category: 'vegetables' },
@@ -81,6 +85,8 @@ const SeedData = {
             cookTime: 15,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '순두부', amount: '1', unit: '봉', category: 'other' },
                 { name: '돼지고기 또는 해물', amount: '50', unit: 'g', category: 'meat' },
@@ -111,6 +117,8 @@ const SeedData = {
             cookTime: 30,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '건미역', amount: '20', unit: 'g', category: 'vegetables' },
                 { name: '소고기 국거리', amount: '150', unit: 'g', category: 'meat' },
@@ -143,6 +151,8 @@ const SeedData = {
             cookTime: 15,
             servings: 3,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기 불고기용', amount: '400', unit: 'g', category: 'meat' },
                 { name: '배', amount: '1/4', unit: '개', category: 'vegetables' },
@@ -175,6 +185,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '돼지고기 앞다리살', amount: '300', unit: 'g', category: 'meat' },
                 { name: '양파', amount: '1', unit: '개', category: 'vegetables' },
@@ -206,6 +218,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '오징어', amount: '2', unit: '마리', category: 'seafood' },
                 { name: '양배추', amount: '1/4', unit: '통', category: 'vegetables' },
@@ -232,6 +246,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '삼겹살', amount: '400', unit: 'g', category: 'meat' },
                 { name: '상추', amount: '1', unit: '봉지', category: 'vegetables' },
@@ -262,6 +278,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밥', amount: '2', unit: '공기', category: 'grain' },
                 { name: '시금치', amount: '100', unit: 'g', category: 'vegetables' },
@@ -296,6 +314,8 @@ const SeedData = {
             cookTime: 25,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '당면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '소고기 채끝', amount: '100', unit: 'g', category: 'meat' },
@@ -325,6 +345,8 @@ const SeedData = {
             cookTime: 10,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '찬밥', amount: '1', unit: '공기', category: 'grain' },
                 { name: '김치', amount: '1/2', unit: '컵', category: 'vegetables' },
@@ -351,6 +373,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '계란', amount: '4', unit: '개', category: 'dairy' },
                 { name: '대파', amount: '1/2', unit: '대', category: 'vegetables' },
@@ -377,6 +401,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '감자', amount: '3', unit: '개', category: 'vegetables' },
                 { name: '양파', amount: '1/4', unit: '개', category: 'vegetables' },
@@ -403,6 +429,8 @@ const SeedData = {
             cookTime: 10,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '멸치(중간 크기)', amount: '100', unit: 'g', category: 'seafood' },
                 { name: '간장', amount: '1', unit: '큰술', category: 'seasoning' },
@@ -428,6 +456,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '중화면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '돼지고기 다짐육', amount: '150', unit: 'g', category: 'meat' },
@@ -461,6 +491,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '중화면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '해물믹스', amount: '200', unit: 'g', category: 'seafood' },
@@ -493,6 +525,8 @@ const SeedData = {
             cookTime: 30,
             servings: 3,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '돼지고기 안심', amount: '300', unit: 'g', category: 'meat' },
                 { name: '전분', amount: '1', unit: '컵', category: 'grain' },
@@ -527,6 +561,8 @@ const SeedData = {
             cookTime: 10,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '찬밥', amount: '1', unit: '공기', category: 'grain' },
                 { name: '계란', amount: '2', unit: '개', category: 'dairy' },
@@ -553,6 +589,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '두부', amount: '1', unit: '모', category: 'other' },
                 { name: '돼지고기 다짐육', amount: '100', unit: 'g', category: 'meat' },
@@ -581,6 +619,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '돼지고기 등심', amount: '2', unit: '장', category: 'meat' },
                 { name: '밀가루', amount: '1/2', unit: '컵', category: 'grain' },
@@ -614,6 +654,8 @@ const SeedData = {
             cookTime: 15,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밥', amount: '1', unit: '공기', category: 'grain' },
                 { name: '닭다리살', amount: '100', unit: 'g', category: 'meat' },
@@ -647,6 +689,8 @@ const SeedData = {
             cookTime: 40,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '돼지고기 또는 소고기', amount: '200', unit: 'g', category: 'meat' },
                 { name: '감자', amount: '2', unit: '개', category: 'vegetables' },
@@ -680,6 +724,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '우동면', amount: '2', unit: '인분', category: 'grain' },
                 { name: '가쓰오부시', amount: '10', unit: 'g', category: 'seafood' },
@@ -707,6 +753,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밥', amount: '2', unit: '공기', category: 'grain' },
                 { name: '소고기 불고기용', amount: '200', unit: 'g', category: 'meat' },
@@ -734,6 +782,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '스파게티면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '베이컨', amount: '100', unit: 'g', category: 'meat' },
@@ -767,6 +817,8 @@ const SeedData = {
             cookTime: 30,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '스파게티면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '소고기 다짐육', amount: '200', unit: 'g', category: 'meat' },
@@ -799,6 +851,8 @@ const SeedData = {
             cookTime: 15,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기 스테이크용', amount: '250', unit: 'g', category: 'meat' },
                 { name: '버터', amount: '30', unit: 'g', category: 'dairy' },
@@ -833,6 +887,8 @@ const SeedData = {
             cookTime: 30,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '아르보리오 쌀', amount: '200', unit: 'g', category: 'grain' },
                 { name: '양파', amount: '1/2', unit: '개', category: 'vegetables' },
@@ -861,6 +917,8 @@ const SeedData = {
             cookTime: 5,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '로메인 상추', amount: '1', unit: '통', category: 'vegetables' },
                 { name: '식빵', amount: '2', unit: '장', category: 'grain' },
@@ -888,6 +946,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '식빵', amount: '4', unit: '장', category: 'grain' },
                 { name: '계란', amount: '2', unit: '개', category: 'dairy' },
@@ -915,6 +975,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밀가루', amount: '200', unit: 'g', category: 'grain' },
                 { name: '베이킹파우더', amount: '2', unit: '작은술', category: 'seasoning' },
@@ -942,6 +1004,8 @@ const SeedData = {
             cookTime: 25,
             servings: 9,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '다크 초콜릿', amount: '200', unit: 'g', category: 'other' },
                 { name: '버터', amount: '150', unit: 'g', category: 'dairy' },
@@ -970,6 +1034,8 @@ const SeedData = {
             cookTime: 0,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '그릭 요거트', amount: '200', unit: 'g', category: 'dairy' },
                 { name: '딸기', amount: '5', unit: '개', category: 'vegetables' },
@@ -997,6 +1063,8 @@ const SeedData = {
             cookTime: 0,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '딸기', amount: '200', unit: 'g', category: 'vegetables' },
                 { name: '플레인 요거트', amount: '150', unit: 'g', category: 'dairy' },
@@ -1022,6 +1090,8 @@ const SeedData = {
             cookTime: 5,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '레몬', amount: '3', unit: '개', category: 'vegetables' },
                 { name: '설탕', amount: '100', unit: 'g', category: 'seasoning' },
@@ -1048,6 +1118,8 @@ const SeedData = {
             cookTime: 0,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1592663527359-cf6642f54cff?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '인스턴트 커피', amount: '2', unit: '큰술', category: 'other' },
                 { name: '설탕', amount: '2', unit: '큰술', category: 'seasoning' },
@@ -1072,6 +1144,8 @@ const SeedData = {
             cookTime: 0,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '녹차 가루', amount: '2', unit: '작은술', category: 'other' },
                 { name: '뜨거운 물', amount: '50', unit: 'ml', category: 'other' },
@@ -1097,6 +1171,8 @@ const SeedData = {
             cookTime: 0,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밥', amount: '2', unit: '공기', category: 'grain' },
                 { name: '참치 캔', amount: '1', unit: '캔', category: 'seafood' },
@@ -1123,6 +1199,8 @@ const SeedData = {
             cookTime: 3,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '식빵', amount: '2', unit: '장', category: 'grain' },
                 { name: '버터', amount: '10', unit: 'g', category: 'dairy' },
@@ -1145,6 +1223,8 @@ const SeedData = {
             cookTime: 60,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '쌀국수 면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '소고기 양지', amount: '300', unit: 'g', category: 'meat' },
@@ -1179,6 +1259,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '쌀면 (센렉)', amount: '200', unit: 'g', category: 'grain' },
                 { name: '새우', amount: '100', unit: 'g', category: 'seafood' },
@@ -1213,6 +1295,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '찬밥', amount: '2', unit: '공기', category: 'grain' },
                 { name: '새우', amount: '100', unit: 'g', category: 'seafood' },
@@ -1240,6 +1324,8 @@ const SeedData = {
             cookTime: 40,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭가슴살', amount: '500', unit: 'g', category: 'meat' },
                 { name: '요거트', amount: '100', unit: 'g', category: 'dairy' },
@@ -1274,6 +1360,8 @@ const SeedData = {
             cookTime: 30,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭다리', amount: '8', unit: '개', category: 'meat' },
                 { name: '요거트', amount: '200', unit: 'g', category: 'dairy' },
@@ -1301,6 +1389,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '강력분', amount: '300', unit: 'g', category: 'grain' },
                 { name: '요거트', amount: '100', unit: 'g', category: 'dairy' },
@@ -1328,6 +1418,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '타코 쉘', amount: '8', unit: '개', category: 'grain' },
                 { name: '소고기 다짐육', amount: '300', unit: 'g', category: 'meat' },
@@ -1361,6 +1453,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '플라워 토르티야', amount: '2', unit: '장', category: 'grain' },
                 { name: '밥', amount: '1', unit: '공기', category: 'grain' },
@@ -1389,6 +1483,8 @@ const SeedData = {
             cookTime: 0,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1600335895229-6e75511892c8?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '아보카도', amount: '2', unit: '개', category: 'vegetables' },
                 { name: '토마토', amount: '1', unit: '개', category: 'vegetables' },
@@ -1416,6 +1512,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '떡볶이 떡', amount: '300', unit: 'g', category: 'grain' },
                 { name: '어묵', amount: '100', unit: 'g', category: 'seafood' },
@@ -1448,6 +1546,8 @@ const SeedData = {
             cookTime: 20,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밥', amount: '3', unit: '공기', category: 'grain' },
                 { name: '김', amount: '4', unit: '장', category: 'other' },
@@ -1478,6 +1578,8 @@ const SeedData = {
             cookTime: 40,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '돼지 창자', amount: '500', unit: 'g', category: 'meat' },
                 { name: '당면', amount: '200', unit: 'g', category: 'grain' },
@@ -1505,6 +1607,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '떡볶이 떡', amount: '200', unit: 'g', category: 'grain' },
                 { name: '라면 사리', amount: '1', unit: '개', category: 'grain' },
@@ -1531,6 +1635,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '대파', amount: '4', unit: '대', category: 'vegetables' },
                 { name: '오징어', amount: '1/2', unit: '마리', category: 'seafood' },
@@ -1562,6 +1668,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1588013273468-315fd88ea34c?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '스파게티', amount: '200', unit: 'g', category: 'grain' },
                 { name: '베이컨 또는 판체타', amount: '150', unit: 'g', category: 'meat' },
@@ -1591,6 +1699,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '링귀네 또는 스파게티', amount: '200', unit: 'g', category: 'grain' },
                 { name: '바지락', amount: '500', unit: 'g', category: 'seafood' },
@@ -1620,6 +1730,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '립아이 스테이크', amount: '400', unit: 'g', category: 'meat' },
                 { name: '버터', amount: '30', unit: 'g', category: 'dairy' },
@@ -1650,6 +1762,8 @@ const SeedData = {
             cookTime: 0,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '완숙 토마토', amount: '3', unit: '개', category: 'vegetables' },
                 { name: '생 모차렐라', amount: '250', unit: 'g', category: 'dairy' },
@@ -1678,6 +1792,8 @@ const SeedData = {
             cookTime: 60,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '양파', amount: '4', unit: '개', category: 'vegetables' },
                 { name: '버터', amount: '50', unit: 'g', category: 'dairy' },
@@ -1707,6 +1823,8 @@ const SeedData = {
             cookTime: 30,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1588566565463-180a5b2090d2?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '바지락 또는 대합', amount: '500', unit: 'g', category: 'seafood' },
                 { name: '베이컨', amount: '100', unit: 'g', category: 'meat' },
@@ -1737,6 +1855,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기 다짐육', amount: '300', unit: 'g', category: 'meat' },
                 { name: '버거 번', amount: '2', unit: '개', category: 'grain' },
@@ -1768,6 +1888,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기 불고기용', amount: '200', unit: 'g', category: 'meat' },
                 { name: '양파', amount: '1', unit: '개', category: 'vegetables' },
@@ -1796,6 +1918,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '돈카츠', amount: '2', unit: '장', category: 'meat' },
                 { name: '양파', amount: '1/2', unit: '개', category: 'vegetables' },
@@ -1825,6 +1949,8 @@ const SeedData = {
             cookTime: 60,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '라멘면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '돈코츠 육수', amount: '800', unit: 'ml', category: 'other' },
@@ -1853,6 +1979,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '연어 사시미용', amount: '200', unit: 'g', category: 'seafood' },
                 { name: '초밥용 쌀', amount: '300', unit: 'g', category: 'grain' },
@@ -1881,6 +2009,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭다리살', amount: '400', unit: 'g', category: 'meat' },
                 { name: '간장', amount: '4', unit: '큰술', category: 'seasoning' },
@@ -1909,6 +2039,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밀가루', amount: '200', unit: 'g', category: 'grain' },
                 { name: '돼지고기 간것', amount: '300', unit: 'g', category: 'meat' },
@@ -1937,6 +2069,8 @@ const SeedData = {
             cookTime: 120,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '삼겹살', amount: '600', unit: 'g', category: 'meat' },
                 { name: '간장', amount: '100', unit: 'ml', category: 'seasoning' },
@@ -1967,6 +2101,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '새우', amount: '200', unit: 'g', category: 'seafood' },
                 { name: '버섯', amount: '100', unit: 'g', category: 'vegetables' },
@@ -1995,6 +2131,8 @@ const SeedData = {
             cookTime: 120,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기 양지', amount: '300', unit: 'g', category: 'meat' },
                 { name: '쌀국수', amount: '400', unit: 'g', category: 'grain' },
@@ -2024,6 +2162,8 @@ const SeedData = {
             cookTime: 30,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭다리살', amount: '500', unit: 'g', category: 'meat' },
                 { name: '요거트', amount: '100', unit: 'g', category: 'dairy' },
@@ -2054,6 +2194,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기 플랭크 스테이크', amount: '500', unit: 'g', category: 'meat' },
                 { name: '또띠아', amount: '8', unit: '장', category: 'grain' },
@@ -2083,6 +2225,8 @@ const SeedData = {
             cookTime: 20,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭가슴살', amount: '400', unit: 'g', category: 'meat' },
                 { name: '대형 또띠아', amount: '4', unit: '장', category: 'grain' },
@@ -2112,6 +2256,8 @@ const SeedData = {
             cookTime: 10,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '토르티야 칩', amount: '200', unit: 'g', category: 'grain' },
                 { name: '소고기 다짐육', amount: '200', unit: 'g', category: 'meat' },
@@ -2141,6 +2287,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '떡볶이 떡', amount: '300', unit: 'g', category: 'grain' },
                 { name: '어묵', amount: '2', unit: '장', category: 'seafood' },
@@ -2169,6 +2317,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밥', amount: '2', unit: '공기', category: 'grain' },
                 { name: '김', amount: '2', unit: '장', category: 'vegetables' },
@@ -2197,6 +2347,8 @@ const SeedData = {
             cookTime: 15,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '쫄면', amount: '150', unit: 'g', category: 'grain' },
                 { name: '양배추', amount: '2', unit: '장', category: 'vegetables' },
@@ -2225,6 +2377,8 @@ const SeedData = {
             cookTime: 15,
             servings: 8,
             image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '강력분', amount: '250', unit: 'g', category: 'grain' },
                 { name: '버터', amount: '100', unit: 'g', category: 'dairy' },
@@ -2253,6 +2407,8 @@ const SeedData = {
             cookTime: 35,
             servings: 8,
             image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '박력분', amount: '150', unit: 'g', category: 'grain' },
                 { name: '코코아파우더', amount: '50', unit: 'g', category: 'other' },
@@ -2281,6 +2437,8 @@ const SeedData = {
             cookTime: 240,
             servings: 6,
             image: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '생크림', amount: '400', unit: 'ml', category: 'dairy' },
                 { name: '우유', amount: '200', unit: 'ml', category: 'dairy' },
@@ -2307,6 +2465,8 @@ const SeedData = {
             cookTime: 0,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1546173159-315724a31696?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '냉동 망고', amount: '200', unit: 'g', category: 'vegetables' },
                 { name: '플레인 요거트', amount: '150', unit: 'g', category: 'dairy' },
@@ -2331,6 +2491,8 @@ const SeedData = {
             cookTime: 0,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '에스프레소', amount: '2', unit: '샷', category: 'other' },
                 { name: '찬물', amount: '150', unit: 'ml', category: 'other' },
@@ -2354,6 +2516,8 @@ const SeedData = {
             cookTime: 0,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '유자청', amount: '2', unit: '큰술', category: 'other' },
                 { name: '뜨거운 물', amount: '200', unit: 'ml', category: 'other' },
@@ -2377,6 +2541,8 @@ const SeedData = {
             cookTime: 10,
             servings: 10,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '간장', amount: '100', unit: 'ml', category: 'seasoning' },
                 { name: '미림', amount: '50', unit: 'ml', category: 'seasoning' },
@@ -2403,6 +2569,8 @@ const SeedData = {
             cookTime: 35,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '아르보리오 쌀', amount: '200', unit: 'g', category: 'grain' },
                 { name: '양송이버섯', amount: '150', unit: 'g', category: 'vegetables' },
@@ -2437,6 +2605,8 @@ const SeedData = {
             cookTime: 30,
             servings: 3,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '새우', amount: '150', unit: 'g', category: 'seafood' },
                 { name: '바지락', amount: '100', unit: 'g', category: 'seafood' },
@@ -2467,6 +2637,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '양배추', amount: '300', unit: 'g', category: 'vegetables' },
                 { name: '밀가루', amount: '100', unit: 'g', category: 'grain' },
@@ -2497,6 +2669,8 @@ const SeedData = {
             cookTime: 15,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '야키소바 면', amount: '300', unit: 'g', category: 'grain' },
                 { name: '삼겹살', amount: '100', unit: 'g', category: 'meat' },
@@ -2526,6 +2700,8 @@ const SeedData = {
             cookTime: 90,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '라멘 면', amount: '240', unit: 'g', category: 'grain' },
                 { name: '돼지 등뼈', amount: '500', unit: 'g', category: 'meat' },
@@ -2555,6 +2731,8 @@ const SeedData = {
             cookTime: 20,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '감자', amount: '500', unit: 'g', category: 'vegetables' },
                 { name: '다진 소고기', amount: '150', unit: 'g', category: 'meat' },
@@ -2583,6 +2761,8 @@ const SeedData = {
             cookTime: 20,
             servings: 3,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭 다리살', amount: '500', unit: 'g', category: 'meat' },
                 { name: '전분', amount: '80', unit: 'g', category: 'grain' },
@@ -2611,6 +2791,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '새우', amount: '150', unit: 'g', category: 'seafood' },
                 { name: '오징어', amount: '100', unit: 'g', category: 'seafood' },
@@ -2639,6 +2821,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '만두피', amount: '30', unit: '장', category: 'grain' },
                 { name: '돼지 다진고기', amount: '300', unit: 'g', category: 'meat' },
@@ -2667,6 +2851,8 @@ const SeedData = {
             cookTime: 10,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '양장피 피', amount: '200', unit: 'g', category: 'grain' },
                 { name: '해파리', amount: '100', unit: 'g', category: 'seafood' },
@@ -2695,6 +2881,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '어묵', amount: '300', unit: 'g', category: 'seafood' },
                 { name: '무', amount: '100', unit: 'g', category: 'vegetables' },
@@ -2721,6 +2909,8 @@ const SeedData = {
             cookTime: 15,
             servings: 3,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '고구마', amount: '1', unit: '개', category: 'vegetables' },
                 { name: '김말이', amount: '5', unit: '개', category: 'other' },
@@ -2746,6 +2936,8 @@ const SeedData = {
             cookTime: 10,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소시지', amount: '4', unit: '개', category: 'meat' },
                 { name: '핫케이크 가루', amount: '200', unit: 'g', category: 'grain' },
@@ -2772,6 +2964,8 @@ const SeedData = {
             cookTime: 20,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '만두피', amount: '20', unit: '장', category: 'grain' },
                 { name: '돼지고기', amount: '200', unit: 'g', category: 'meat' },
@@ -2797,6 +2991,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '핫케이크 가루', amount: '200', unit: 'g', category: 'grain' },
                 { name: '계란', amount: '4', unit: '개', category: 'dairy' },
@@ -2822,6 +3018,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '어묵', amount: '200', unit: 'g', category: 'seafood' },
                 { name: '양파', amount: '1/2', unit: '개', category: 'vegetables' },
@@ -2847,6 +3045,8 @@ const SeedData = {
             cookTime: 15,
             servings: 20,
             image: 'https://images.unsplash.com/photo-1558326567-98ae2405596b?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '아몬드 가루', amount: '150', unit: 'g', category: 'grain' },
                 { name: '슈가파우더', amount: '150', unit: 'g', category: 'seasoning' },
@@ -2874,6 +3074,8 @@ const SeedData = {
             cookTime: 0,
             servings: 6,
             image: 'https://images.unsplash.com/photo-1586040140378-b5634cb4c8fc?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '레이디핑거', amount: '200', unit: 'g', category: 'grain' },
                 { name: '마스카포네', amount: '500', unit: 'g', category: 'dairy' },
@@ -2902,6 +3104,8 @@ const SeedData = {
             cookTime: 25,
             servings: 12,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '다크 초콜릿', amount: '200', unit: 'g', category: 'other' },
                 { name: '버터', amount: '150', unit: 'g', category: 'dairy' },
@@ -2929,6 +3133,8 @@ const SeedData = {
             cookTime: 20,
             servings: 6,
             image: 'https://images.unsplash.com/photo-1584278858536-52532423b9ea?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밀가루', amount: '200', unit: 'g', category: 'grain' },
                 { name: '달걀', amount: '3', unit: '개', category: 'dairy' },
@@ -2955,6 +3161,8 @@ const SeedData = {
             cookTime: 40,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1527325678964-54921661f888?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '달걀', amount: '3', unit: '개', category: 'dairy' },
                 { name: '우유', amount: '400', unit: 'ml', category: 'dairy' },
@@ -2980,6 +3188,8 @@ const SeedData = {
             cookTime: 10,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밀가루', amount: '200', unit: 'g', category: 'grain' },
                 { name: '달걀', amount: '2', unit: '개', category: 'dairy' },
@@ -3006,6 +3216,8 @@ const SeedData = {
             cookTime: 20,
             servings: 12,
             image: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '냉동 파이지', amount: '1', unit: '장', category: 'grain' },
                 { name: '달걀 노른자', amount: '4', unit: '개', category: 'dairy' },
@@ -3031,6 +3243,8 @@ const SeedData = {
             cookTime: 30,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '타피오카 펄', amount: '100', unit: 'g', category: 'grain' },
                 { name: '홍차', amount: '2', unit: '티백', category: 'other' },
@@ -3055,6 +3269,8 @@ const SeedData = {
             cookTime: 5,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '우유', amount: '400', unit: 'ml', category: 'dairy' },
                 { name: '다크 초콜릿', amount: '100', unit: 'g', category: 'other' },
@@ -3078,6 +3294,8 @@ const SeedData = {
             cookTime: 0,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '바닐라 아이스크림', amount: '200', unit: 'g', category: 'dairy' },
                 { name: '우유', amount: '200', unit: 'ml', category: 'dairy' },
@@ -3100,6 +3318,8 @@ const SeedData = {
             cookTime: 0,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '녹차 가루', amount: '2', unit: '작은술', category: 'other' },
                 { name: '우유', amount: '200', unit: 'ml', category: 'dairy' },
@@ -3123,6 +3343,8 @@ const SeedData = {
             cookTime: 0,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1560508179-b2c9a3f8e92b?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '자몽', amount: '1', unit: '개', category: 'vegetables' },
                 { name: '설탕', amount: '2', unit: '큰술', category: 'seasoning' },
@@ -3147,6 +3369,8 @@ const SeedData = {
             cookTime: 0,
             servings: 1,
             image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '에스프레소', amount: '2', unit: '샷', category: 'other' },
                 { name: '생크림', amount: '100', unit: 'ml', category: 'dairy' },
@@ -3170,6 +3394,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '인스턴트 면', amount: '200', unit: 'g', category: 'grain' },
                 { name: '양배추', amount: '100', unit: 'g', category: 'vegetables' },
@@ -3194,6 +3420,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭가슴살', amount: '400', unit: 'g', category: 'meat' },
                 { name: '땅콩버터', amount: '100', unit: 'g', category: 'other' },
@@ -3219,6 +3447,8 @@ const SeedData = {
             cookTime: 30,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '쌀국수', amount: '200', unit: 'g', category: 'grain' },
                 { name: '코코넛밀크', amount: '400', unit: 'ml', category: 'dairy' },
@@ -3245,6 +3475,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1600688640154-9619e002df30?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '바게트', amount: '2', unit: '개', category: 'grain' },
                 { name: '돼지고기', amount: '200', unit: 'g', category: 'meat' },
@@ -3271,6 +3503,8 @@ const SeedData = {
             cookTime: 20,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '쌀국수', amount: '200', unit: 'g', category: 'grain' },
                 { name: '돼지고기', amount: '300', unit: 'g', category: 'meat' },
@@ -3297,6 +3531,8 @@ const SeedData = {
             cookTime: 30,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '찹쌀', amount: '200', unit: 'g', category: 'grain' },
                 { name: '망고', amount: '2', unit: '개', category: 'vegetables' },
@@ -3322,6 +3558,8 @@ const SeedData = {
             cookTime: 0,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1623689046286-01bd6d3bce52?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '그린 파파야', amount: '300', unit: 'g', category: 'vegetables' },
                 { name: '토마토', amount: '2', unit: '개', category: 'vegetables' },
@@ -3349,6 +3587,8 @@ const SeedData = {
             cookTime: 180,
             servings: 6,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기', amount: '1', unit: 'kg', category: 'meat' },
                 { name: '코코넛밀크', amount: '800', unit: 'ml', category: 'dairy' },
@@ -3373,6 +3613,8 @@ const SeedData = {
             cookTime: 20,
             servings: 8,
             image: 'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밀가루', amount: '200', unit: 'g', category: 'grain' },
                 { name: '감자', amount: '300', unit: 'g', category: 'vegetables' },
@@ -3398,6 +3640,8 @@ const SeedData = {
             cookTime: 30,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '시금치', amount: '500', unit: 'g', category: 'vegetables' },
                 { name: '파니르', amount: '200', unit: 'g', category: 'dairy' },
@@ -3424,6 +3668,8 @@ const SeedData = {
             cookTime: 40,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '렌틸콩', amount: '200', unit: 'g', category: 'grain' },
                 { name: '양파', amount: '1', unit: '개', category: 'vegetables' },
@@ -3449,6 +3695,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '홍차', amount: '2', unit: '큰술', category: 'other' },
                 { name: '우유', amount: '300', unit: 'ml', category: 'dairy' },
@@ -3475,6 +3723,8 @@ const SeedData = {
             cookTime: 0,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1626078437693-c4e7bb1c5f08?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '플레인 요거트', amount: '300', unit: 'g', category: 'dairy' },
                 { name: '우유', amount: '100', unit: 'ml', category: 'dairy' },
@@ -3498,6 +3748,8 @@ const SeedData = {
             cookTime: 60,
             servings: 6,
             image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '바스마티 쌀', amount: '400', unit: 'g', category: 'grain' },
                 { name: '닭고기', amount: '500', unit: 'g', category: 'meat' },
@@ -3524,6 +3776,8 @@ const SeedData = {
             cookTime: 40,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '닭고기', amount: '500', unit: 'g', category: 'meat' },
                 { name: '캐슈넛', amount: '100', unit: 'g', category: 'other' },
@@ -3550,6 +3804,8 @@ const SeedData = {
             cookTime: 15,
             servings: 8,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '통밀가루', amount: '200', unit: 'g', category: 'grain' },
                 { name: '물', amount: '120', unit: 'ml', category: 'other' },
@@ -3573,6 +3829,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '병아리콩 가루', amount: '150', unit: 'g', category: 'grain' },
                 { name: '양파', amount: '2', unit: '개', category: 'vegetables' },
@@ -3598,6 +3856,8 @@ const SeedData = {
             cookTime: 10,
             servings: 2,
             image: 'https://images.unsplash.com/photo-1618040996337-56904b7850b9?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '플라워 토르티야', amount: '4', unit: '장', category: 'grain' },
                 { name: '체다 치즈', amount: '200', unit: 'g', category: 'dairy' },
@@ -3623,6 +3883,8 @@ const SeedData = {
             cookTime: 25,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1534352956036-cd81e27fed21?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '콘 토르티야', amount: '8', unit: '장', category: 'grain' },
                 { name: '닭고기', amount: '400', unit: 'g', category: 'meat' },
@@ -3648,6 +3910,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1625164274792-35c9e0ed091b?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기', amount: '400', unit: 'g', category: 'meat' },
                 { name: '피망', amount: '2', unit: '개', category: 'vegetables' },
@@ -3674,6 +3938,8 @@ const SeedData = {
             cookTime: 45,
             servings: 6,
             image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '소고기 다짐육', amount: '500', unit: 'g', category: 'meat' },
                 { name: '강낭콩', amount: '400', unit: 'g', category: 'vegetables' },
@@ -3701,6 +3967,8 @@ const SeedData = {
             cookTime: 15,
             servings: 8,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밀가루', amount: '250', unit: 'g', category: 'grain' },
                 { name: '베이킹파우더', amount: '1', unit: '작은술', category: 'seasoning' },
@@ -3726,6 +3994,8 @@ const SeedData = {
             cookTime: 0,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '토마토', amount: '4', unit: '개', category: 'vegetables' },
                 { name: '양파', amount: '1/2', unit: '개', category: 'vegetables' },
@@ -3751,6 +4021,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '옥수수', amount: '4', unit: '개', category: 'vegetables' },
                 { name: '마요네즈', amount: '100', unit: 'g', category: 'seasoning' },
@@ -3776,6 +4048,8 @@ const SeedData = {
             cookTime: 15,
             servings: 6,
             image: 'https://images.unsplash.com/photo-1626198226928-85bcfcdf5938?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '밀가루', amount: '150', unit: 'g', category: 'grain' },
                 { name: '버터', amount: '50', unit: 'g', category: 'dairy' },
@@ -3802,6 +4076,8 @@ const SeedData = {
             cookTime: 15,
             servings: 4,
             image: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=800',
+            isVerified: false,
+            imageVerified: false,
             ingredients: [
                 { name: '초리소', amount: '300', unit: 'g', category: 'meat' },
                 { name: '토르티야', amount: '8', unit: '장', category: 'grain' },

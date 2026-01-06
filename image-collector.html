@@ -168,13 +168,13 @@
         ];
 
         const foodList = document.getElementById('foodList');
-        const newUrls = {};
+        const newUrls = {}; // Stores { url: '...', confirmed: true/false }
 
         function updateStats() {
-            const fixed = Object.keys(newUrls).filter(k => newUrls[k]).length;
-            const remaining = foodGroups.length - fixed;
+            const confirmedCount = Object.keys(newUrls).filter(k => newUrls[k] && newUrls[k].confirmed).length;
+            const remaining = foodGroups.length - confirmedCount;
             document.getElementById('remaining').textContent = remaining;
-            document.getElementById('fixed').textContent = fixed;
+            document.getElementById('fixed').textContent = confirmedCount;
         }
 
         function renderFoods() {
@@ -187,9 +187,9 @@
                 const linesText = `Line: ${food.line}`;
 
                 div.innerHTML = `
-                    <div class="current-image ${hasNewUrl ? 'new-img' : ''}">
-                        <img src="${hasNewUrl || food.currentImage}" alt="${food.title}" onerror="this.src='https://via.placeholder.com/200x150?text=Error'">
-                        <div class="label">${hasNewUrl ? '새 이미지' : '현재 (잘못된) 이미지'}</div>
+                    <div class="current-image ${hasNewUrl && newUrls[idx].confirmed ? 'new-img' : ''}">
+                        <img src="${(hasNewUrl ? newUrls[idx].url : '') || food.currentImage}" alt="${food.title}" onerror="this.src='https://via.placeholder.com/200x150?text=Error'">
+                        <div class="label">${(hasNewUrl && newUrls[idx].confirmed) ? '새 이미지 (확인됨)' : (hasNewUrl ? '새 이미지 (미확인)' : '현재 (잘못된) 이미지')}</div>
                     </div>
                     <div class="food-info">
                         <div class="food-name">${food.title}</div>
@@ -201,10 +201,13 @@
                             <a href="https://unsplash.com/s/photos/${encodeURIComponent(food.searchTerms.replace(/ /g, '-'))}" target="_blank">Unsplash</a>
                         </div>
                         <div class="url-input">
-                            <input type="text" id="url-${idx}" placeholder="새 이미지 URL을 붙여넣으세요..." value="${newUrls[idx] || ''}" onkeypress="if(event.key==='Enter')applyUrl(${idx})">
+                            <input type="text" id="url-${idx}" placeholder="새 이미지 URL을 붙여넣으세요..." value="${(hasNewUrl ? newUrls[idx].url : '') || ''}" onkeypress="if(event.key==='Enter')applyUrl(${idx})">
                             <button onclick="applyUrl(${idx})">적용</button>
                         </div>
-                        <div class="preview" id="preview-${idx}"></div>
+                        <div class="preview" id="preview-${idx}">
+                            ${hasNewUrl ? `<img src="${newUrls[idx].url}" alt="미리보기" onerror="this.src='https://via.placeholder.com/200x120?text=URL+오류'">
+                                <label><input type="checkbox" id="confirm-${idx}" ${newUrls[idx].confirmed ? 'checked' : ''} onclick="toggleConfirm(${idx})"> 이미지 확인됨</label>` : ''}
+                        </div>
                     </div>
                 `;
                 foodList.appendChild(div);
@@ -216,9 +219,16 @@
             const input = document.getElementById(`url-${idx}`);
             const url = input.value.trim();
             if (url) {
-                newUrls[idx] = url;
+                newUrls[idx] = { url: url, confirmed: false }; // Store URL and unconfirmed status
                 renderFoods();
             }
+        }
+
+        function toggleConfirm(idx) {
+            if (newUrls[idx]) {
+                newUrls[idx].confirmed = !newUrls[idx].confirmed;
+            }
+            renderFoods();
         }
 
         function generateCode() {
@@ -227,8 +237,8 @@
 
             const updates = [];
             foodGroups.forEach((food, idx) => {
-                if (newUrls[idx]) {
-                    updates.push({ title: food.title, line: food.line, url: newUrls[idx] });
+                if (newUrls[idx] && newUrls[idx].confirmed) {
+                    updates.push({ title: food.title, line: food.line, url: newUrls[idx].url });
                 }
             });
 

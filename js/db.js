@@ -36,6 +36,8 @@ class FoodBooksDB {
                     recipeStore.createIndex('category', 'category', { unique: false });
                     recipeStore.createIndex('createdAt', 'createdAt', { unique: false });
                     recipeStore.createIndex('isFavorite', 'isFavorite', { unique: false });
+                    recipeStore.createIndex('isVerified', 'isVerified', { unique: false });
+                    recipeStore.createIndex('imageVerified', 'imageVerified', { unique: false });
                 }
 
                 // 쇼핑리스트 저장소
@@ -71,7 +73,9 @@ class FoodBooksDB {
             isFavorite: false,
             rating: 0,
             cookCount: 0,
-            lastCooked: null
+            lastCooked: null,
+            isVerified: false,
+            imageVerified: false
         };
 
         return new Promise((resolve, reject) => {
