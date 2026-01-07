@@ -110,15 +110,20 @@ document.addEventListener('DOMContentLoaded', async function() {
         '소시지': 'sausage',
     };
 
+    // 페이지네이션 상태 변수
+    let currentSearchQuery = '';
+    let currentPage = 1;
+    const perPage = 10;
+
     // 이미지 검색 함수 (Pexels API 사용)
-    async function searchImages(query, count = 5) {
+    async function searchImages(query, page = 1, count = 10) {
         // 영어 매핑 적용 (없으면 원본 + food 키워드)
         const englishQuery = foodNameMapping[query] || query + ' food dish';
         console.log(`검색어 변환: "${query}" → "${englishQuery}"`);
 
         try {
             const response = await fetch(
-                `https://api.pexels.com/v1/search?query=${encodeURIComponent(englishQuery)}&per_page=${count}`,
+                `https://api.pexels.com/v1/search?query=${encodeURIComponent(englishQuery)}&per_page=${count}&page=${page}`,
                 {
                     headers: {
                         'Authorization': PEXELS_API_KEY
@@ -142,9 +147,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    // 검색 결과 표시
+    // 검색 결과 표시 (기존 결과 삭제 후 새로 표시)
     function displaySearchResults(imageUrls) {
         searchResults.innerHTML = ''; // Clear previous results
+        appendSearchResults(imageUrls);
+    }
+
+    // 검색 결과 추가 (기존 결과 유지하고 추가)
+    function appendSearchResults(imageUrls) {
         imageUrls.forEach(url => {
             const img = document.createElement('img');
             img.src = url;
@@ -175,9 +185,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     const searchResults = document.getElementById('searchResults');
     const modalSaveButton = document.getElementById('modalSaveButton');
     const modalCancelButton = document.getElementById('modalCancelButton');
+    const loadMoreButton = document.getElementById('loadMoreButton');
 
     console.log('imageSearchButton:', imageSearchButton ? 'OK' : 'NULL!');
     console.log('searchResults:', searchResults ? 'OK' : 'NULL!');
+    console.log('loadMoreButton:', loadMoreButton ? 'OK' : 'NULL!');
     console.log('=== DOM 요소 로드 완료 ===')
 
     let currentFoodId = null; // To keep track of which food item is being verified
@@ -217,6 +229,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         searchResults.innerHTML = '';
+        // 더 보기 버튼 초기화
+        if (loadMoreButton) {
+            loadMoreButton.style.display = 'none';
+        }
+        currentSearchQuery = '';
+        currentPage = 1;
         verificationModal.style.display = 'flex';
     }
 
@@ -429,12 +447,37 @@ document.addEventListener('DOMContentLoaded', async function() {
             const query = imageSearchInput.value;
             if (query) {
                 console.log('검색 시작:', query);
-                const images = await searchImages(query);
+                currentSearchQuery = query;
+                currentPage = 1;
+                const images = await searchImages(query, currentPage, perPage);
                 console.log('검색 결과:', images);
                 displaySearchResults(images.map(img => img.url));
+                // 결과가 perPage개 이상이면 "더 보기" 버튼 표시
+                if (images.length >= perPage && loadMoreButton) {
+                    loadMoreButton.style.display = 'block';
+                } else if (loadMoreButton) {
+                    loadMoreButton.style.display = 'none';
+                }
             }
         }
     });
+
+    // "더 보기" 버튼 클릭 이벤트
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', async () => {
+            if (currentSearchQuery) {
+                currentPage++;
+                console.log(`더 보기: ${currentSearchQuery}, 페이지 ${currentPage}`);
+                const images = await searchImages(currentSearchQuery, currentPage, perPage);
+                console.log('추가 결과:', images);
+                appendSearchResults(images.map(img => img.url));
+                // 결과가 perPage개 미만이면 더 이상 없으므로 버튼 숨김
+                if (images.length < perPage) {
+                    loadMoreButton.style.display = 'none';
+                }
+            }
+        });
+    }
 
     // 검색 결과 이미지 선택 이벤트
     searchResults.addEventListener('click', (event) => {
