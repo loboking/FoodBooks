@@ -147,21 +147,34 @@
         const UNSPLASH_ACCESS_KEY = 'demo'; // 실제 키로 교체 필요
 
         // 이미지 검색 함수 (Unsplash API 또는 대체 소스)
+        // Pexels API Key
+        const PEXELS_API_KEY = 'WJdYLaLMxokly9sPiHieF3WQzlUVPJH8YCZ6mpwts4RGe34KcnfxnJXW';
+
         async function searchImages(query, count = 5) {
-            // Unsplash Source API (API 키 없이 사용 가능한 대안)
-            const images = [];
-            const sources = ['unsplash', 'picsum'];
+            try {
+                const response = await fetch(
+                    `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${count}`,
+                    {
+                        headers: {
+                            'Authorization': PEXELS_API_KEY
+                        }
+                    }
+                );
 
-            // Unsplash Source로 이미지 생성
-            for (let i = 0; i < count; i++) {
-                const seed = Math.random().toString(36).substring(7);
-                images.push({
-                    url: `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}&sig=${seed}`,
-                    source: 'Unsplash'
-                });
+                if (!response.ok) {
+                    throw new Error(`Pexels API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data.photos.map(photo => ({
+                    url: photo.src.medium,
+                    source: 'Pexels',
+                    photographer: photo.photographer
+                }));
+            } catch (error) {
+                console.error('이미지 검색 실패:', error);
+                return [];
             }
-
-            return images;
         }
 
         // 통계 업데이트

@@ -17,17 +17,35 @@ document.addEventListener('DOMContentLoaded', async function() {
         { foods: ['볶음밥', '계란말이'], reason: '볶음밥에 계란말이 이미지 사용' }
     ];
 
-    // 이미지 검색 함수 (Unsplash Source API 사용)
+    // Pexels API Key
+    const PEXELS_API_KEY = 'WJdYLaLMxokly9sPiHieF3WQzlUVPJH8YCZ6mpwts4RGe34KcnfxnJXW';
+
+    // 이미지 검색 함수 (Pexels API 사용)
     async function searchImages(query, count = 5) {
-        const images = [];
-        for (let i = 0; i < count; i++) {
-            const seed = Math.random().toString(36).substring(7); // 무작위성 추가
-            images.push({
-                url: `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}&sig=${seed}`,
-                source: 'Unsplash'
-            });
+        try {
+            const response = await fetch(
+                `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${count}`,
+                {
+                    headers: {
+                        'Authorization': PEXELS_API_KEY
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`Pexels API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.photos.map(photo => ({
+                url: photo.src.medium,
+                source: 'Pexels',
+                photographer: photo.photographer
+            }));
+        } catch (error) {
+            console.error('이미지 검색 실패:', error);
+            return [];
         }
-        return images;
     }
 
     // 검색 결과 표시
