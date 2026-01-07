@@ -346,6 +346,16 @@
             await db.init();
             foods = await db.getAllRecipes();
 
+            // IndexedDB가 비어있으면 seed-data.js에서 초기 데이터 로드
+            if (foods.length === 0 && typeof SeedData !== 'undefined' && SeedData.recipes) {
+                console.log('IndexedDB가 비어있습니다. seed-data.js에서 초기 데이터를 로드합니다...');
+                for (const recipe of SeedData.recipes) {
+                    await db.addRecipe(recipe);
+                }
+                foods = await db.getAllRecipes();
+                console.log(`${foods.length}개의 레시피가 로드되었습니다.`);
+            }
+
             // 모든 레시피의 현재 이미지 URL을 후보 목록에 포함
             const existingImageUrls = foods.map(food => food.image).filter(url => url);
 
