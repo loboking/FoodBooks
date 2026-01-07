@@ -375,39 +375,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.log(`${foods.length}개의 레시피가 로드되었습니다.`);
         }
 
-        // 모든 레시피의 현재 이미지 URL을 후보 목록에 포함
-        const existingImageUrls = foods.map(food => food.image).filter(url => url);
-
-        // 일반적인 음식 이미지를 위한 광범위한 검색 (자동 감지를 위한 후보 풀 생성)
-        const genericImageCandidates = await searchImages("food cuisine", 10); // 10개의 일반 이미지 후보
-        const genericImageUrls = genericImageCandidates.map(img => img.url);
-
-        // 모든 후보 이미지 URL 결합
-        const allCandidateImageUrls = [...new Set([...existingImageUrls, ...genericImageUrls])];
-
-        // Utils가 정의되었는지 확인
-        if (typeof Utils === 'undefined') {
-            console.error("Utils 객체를 찾을 수 없습니다. js/utils.js가 올바르게 로드되었는지 확인하세요.");
-            return;
-        }
-
-        // 자동 매칭 로직 적용
-        const autoMatches = Utils.findMatchingImages(foods, allCandidateImageUrls.map(img => img.url || img));
-
-        // 자동 매칭 결과를 데이터베이스에 저장
-        for (const match of autoMatches) {
-            const recipeToUpdate = foods.find(f => f.id === match.recipeId);
-            if (recipeToUpdate) {
-                if (!recipeToUpdate.autoDetectedImageUrl || match.confidence > (recipeToUpdate.autoDetectConfidence || 0) || match.matchedImageUrl !== recipeToUpdate.autoDetectedImageUrl) {
-                     await db.updateRecipe(match.recipeId, {
-                        autoDetectedImageUrl: match.matchedImageUrl,
-                        autoDetectConfidence: match.confidence
-                    });
-                }
-            }
-        }
-        // 업데이트된 레시피 데이터 다시 로드 (UI 갱신을 위해)
-        foods = await db.getAllRecipes();
+        // 자동 매칭 로직은 비활성화 (수동 검색만 사용)
+        // 필요시 나중에 활성화 가능
 
         // UI 렌더링 시작
         renderAllCards();
