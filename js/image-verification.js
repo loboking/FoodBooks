@@ -113,13 +113,21 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 페이지네이션 상태 변수
     let currentSearchQuery = '';
     let currentPage = 1;
+    let currentUseDirectEnglish = false;
     const perPage = 10;
 
     // 이미지 검색 함수 (Pexels API 사용)
-    async function searchImages(query, page = 1, count = 10) {
-        // 영어 매핑 적용 (없으면 원본 + food 키워드)
-        const englishQuery = foodNameMapping[query] || query + ' food dish';
-        console.log(`검색어 변환: "${query}" → "${englishQuery}"`);
+    async function searchImages(query, page = 1, count = 10, useDirectEnglish = false) {
+        // 영어 직접 검색 모드면 변환 없이 그대로 사용
+        let englishQuery;
+        if (useDirectEnglish) {
+            englishQuery = query;
+            console.log(`영어 직접 검색: "${query}"`);
+        } else {
+            // 영어 매핑 적용 (없으면 원본 + food 키워드)
+            englishQuery = foodNameMapping[query] || query + ' food dish';
+            console.log(`검색어 변환: "${query}" → "${englishQuery}"`);
+        }
 
         try {
             const response = await fetch(
@@ -189,11 +197,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     const imagePreviewModal = document.getElementById('imagePreviewModal');
     const previewImage = document.getElementById('previewImage');
     const closePreview = imagePreviewModal ? imagePreviewModal.querySelector('.close-preview') : null;
+    const searchInEnglishCheckbox = document.getElementById('searchInEnglish');
 
     console.log('imageSearchButton:', imageSearchButton ? 'OK' : 'NULL!');
     console.log('searchResults:', searchResults ? 'OK' : 'NULL!');
     console.log('loadMoreButton:', loadMoreButton ? 'OK' : 'NULL!');
     console.log('imagePreviewModal:', imagePreviewModal ? 'OK' : 'NULL!');
+    console.log('searchInEnglishCheckbox:', searchInEnglishCheckbox ? 'OK' : 'NULL!');
     console.log('=== DOM 요소 로드 완료 ===')
 
     let currentFoodId = null; // To keep track of which food item is being verified
@@ -453,7 +463,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 console.log('검색 시작:', query);
                 currentSearchQuery = query;
                 currentPage = 1;
-                const images = await searchImages(query, currentPage, perPage);
+                // 영어 직접 검색 체크박스 상태 확인
+                currentUseDirectEnglish = searchInEnglishCheckbox ? searchInEnglishCheckbox.checked : false;
+                const images = await searchImages(query, currentPage, perPage, currentUseDirectEnglish);
                 console.log('검색 결과:', images);
                 displaySearchResults(images.map(img => img.url));
                 // 결과가 perPage개 이상이면 "더 보기" 버튼 표시
@@ -472,7 +484,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (currentSearchQuery) {
                 currentPage++;
                 console.log(`더 보기: ${currentSearchQuery}, 페이지 ${currentPage}`);
-                const images = await searchImages(currentSearchQuery, currentPage, perPage);
+                const images = await searchImages(currentSearchQuery, currentPage, perPage, currentUseDirectEnglish);
                 console.log('추가 결과:', images);
                 appendSearchResults(images.map(img => img.url));
                 // 결과가 perPage개 미만이면 더 이상 없으므로 버튼 숨김

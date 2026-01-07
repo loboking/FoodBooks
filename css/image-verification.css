@@ -169,10 +169,10 @@
 
 #searchResults {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
     margin-top: 15px;
-    max-height: 300px; /* Limit height for scroll */
+    max-height: 400px; /* Limit height for scroll */
     overflow-y: auto;
     border: 1px solid #eee;
     padding: 10px;
@@ -181,10 +181,11 @@
 
 #searchResults img {
     width: 100%;
-    height: 100px;
+    height: 150px;
     object-fit: cover;
-    border: 2px solid transparent;
+    border: 3px solid transparent;
     cursor: pointer;
+    border-radius: 6px;
 }
 
 #searchResults img.selected {
