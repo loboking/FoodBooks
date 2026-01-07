@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         return `
             <div class="card ${isDuplicate ? 'duplicate' : ''} ${isMismatch ? 'mismatch' : ''} ${isVerified ? 'verified' : ''} ${food.autoDetectedImageUrl && !isVerified ? 'auto-suggested' : ''}" data-id="${food.id}">
-                <img src="${food.image}" alt="${food.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200?text=Image+Error'">
+                <img src="${food.image}" alt="${food.title}" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x200/eeeeee/999999?text=No+Image'">
                 <div class="card-body">
                     <div class="card-title">${food.title}</div>
                     <div class="card-description">${food.description || 'N/A'}</div>

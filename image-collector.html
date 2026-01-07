@@ -190,12 +190,12 @@
                     <div class="image-comparison">
                         <div class="image-box current">
                             <div class="image-box-label">현재 (잘못된) 이미지</div>
-                            <img src="${food.currentImage}" alt="현재 이미지" onerror="this.src='https://via.placeholder.com/300x200?text=Error'">
+                            <img src="${food.currentImage}" alt="현재 이미지" onerror="this.onerror=null; this.src='https://placehold.co/300x200/eeeeee/999999?text=Error'">
                         </div>
                         <div class="arrow">→</div>
                         <div class="image-box new ${s.selectedUrl ? '' : 'empty'}">
                             <div class="image-box-label">새 이미지</div>
-                            <img src="${s.selectedUrl || 'https://via.placeholder.com/300x200?text=선택해주세요'}" alt="새 이미지" onerror="this.src='https://via.placeholder.com/300x200?text=Error'">
+                            <img src="${s.selectedUrl || 'https://placehold.co/300x200/eeeeee/999999?text=Select'}" alt="새 이미지" onerror="this.onerror=null; this.src='https://placehold.co/300x200/eeeeee/999999?text=Error'">
                         </div>
                     </div>
 
@@ -234,7 +234,7 @@
             return state[idx].candidates.map((img, i) => `
                 <div class="candidate ${state[idx].selectedUrl === img.url ? 'selected' : ''}"
                      onclick="selectCandidate(${idx}, '${img.url}')">
-                    <img src="${img.url}" alt="후보 ${i+1}" onerror="this.src='https://via.placeholder.com/200x120?text=Error'">
+                    <img src="${img.url}" alt="후보 ${i+1}" onerror="this.onerror=null; this.src='https://placehold.co/200x120/eeeeee/999999?text=Error'">
                     <div class="check">✓</div>
                     <div class="source">${img.source}</div>
                 </div>
