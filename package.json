@@ -1,0 +1,31 @@
+{
+  "name": "foodbooks",
+  "version": "1.0.0",
+  "description": "나만의 레시피북 - 레시피 관리 및 공유 웹 애플리케이션",
+  "main": "index.html",
+  "scripts": {
+    "serve": "firebase serve",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:database": "firebase deploy --only database",
+    "lint": "echo 'ESLint not configured yet'"
+  },
+  "keywords": [
+    "recipe",
+    "food",
+    "cooking",
+    "firebase",
+    "indexeddb",
+    "pwa"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
