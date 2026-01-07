@@ -3,7 +3,7 @@
  */
 
 const DB_NAME = 'FoodBooksDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 class FoodBooksDB {
     constructor() {
@@ -38,6 +38,18 @@ class FoodBooksDB {
                     recipeStore.createIndex('isFavorite', 'isFavorite', { unique: false });
                     recipeStore.createIndex('isVerified', 'isVerified', { unique: false });
                     recipeStore.createIndex('imageVerified', 'imageVerified', { unique: false });
+                    // 새로운 필드에 대한 인덱스 추가
+                    recipeStore.createIndex('autoDetectedImageUrl', 'autoDetectedImageUrl', { unique: false });
+                    recipeStore.createIndex('autoDetectConfidence', 'autoDetectConfidence', { unique: false });
+                } else {
+                    // 기존 저장소에 새로운 인덱스를 추가하는 경우
+                    const recipeStore = event.target.transaction.objectStore('recipes');
+                    if (!recipeStore.indexNames.contains('autoDetectedImageUrl')) {
+                        recipeStore.createIndex('autoDetectedImageUrl', 'autoDetectedImageUrl', { unique: false });
+                    }
+                    if (!recipeStore.indexNames.contains('autoDetectConfidence')) {
+                        recipeStore.createIndex('autoDetectConfidence', 'autoDetectConfidence', { unique: false });
+                    }
                 }
 
                 // 쇼핑리스트 저장소
@@ -75,7 +87,9 @@ class FoodBooksDB {
             cookCount: 0,
             lastCooked: null,
             isVerified: false,
-            imageVerified: false
+            imageVerified: false,
+            autoDetectedImageUrl: null, // New field
+            autoDetectConfidence: 0    // New field
         };
 
         return new Promise((resolve, reject) => {

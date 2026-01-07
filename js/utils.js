@@ -397,5 +397,66 @@ const Utils = {
         text += 'FoodBooks에서 생성됨';
 
         return text;
+    },
+
+    /**
+     * 레시피와 이미지 URL 자동 매칭
+     * @param {Array<Object>} recipes - 레시피 목록 (각 레시피는 'title'과 'id'를 가짐)
+     * @param {Array<string>} candidateImageUrls - 검증할 이미지 URL 목록
+     * @returns {Array<Object>} 매칭된 레시피-이미지 쌍 목록 (recipeId, recipeTitle, matchedImageUrl, confidence)
+     */
+    findMatchingImages(recipes, candidateImageUrls) {
+        const matches = [];
+
+        recipes.forEach(recipe => {
+            const recipeTitleLower = recipe.title.toLowerCase().replace(/\s/g, ''); // 공백 제거
+            const recipeId = recipe.id; // 레시피 ID
+
+            let bestMatchUrl = null;
+            let maxScore = 0; // 매칭 점수
+
+            candidateImageUrls.forEach(imageUrl => {
+                const imageUrlLower = imageUrl.toLowerCase();
+                let currentScore = 0;
+
+                // 1. URL에 레시피 제목이 포함되어 있는지 확인 (단어 단위 또는 부분 문자열)
+                if (imageUrlLower.includes(recipeTitleLower)) {
+                    currentScore += 10; // 높은 점수
+                } else {
+                    // 제목의 키워드를 분리하여 매칭 시도 (예: "김치찌개" -> "김치", "찌개")
+                    const keywords = recipeTitleLower.split(/[\s_-]+/);
+                    keywords.forEach(keyword => {
+                        if (keyword.length > 1 && imageUrlLower.includes(keyword)) {
+                            currentScore += 2;
+                        }
+                    });
+                }
+
+
+                // 2. URL에 레시피 ID가 포함되어 있는지 확인 (정확한 ID 매칭)
+                // 현재 seed-data의 이미지 URL은 범용 Unsplash 링크라 ID 매칭은 어려울 수 있음.
+                // 만약 이미지 URL 규칙이 '.../recipe_<ID>.jpg' 형태라면 유용
+                if (recipeId && imageUrlLower.includes(recipeId.toLowerCase())) {
+                    currentScore += 5; // ID 매칭은 제목만큼 중요하지 않을 수 있음, 또는 높은 점수 부여 가능
+                }
+
+                if (currentScore > maxScore) {
+                    maxScore = currentScore;
+                    bestMatchUrl = imageUrl;
+                }
+            });
+
+            if (bestMatchUrl && maxScore > 0) { // 최소한의 매칭 점수가 있을 때만 추가
+                matches.push({
+                    recipeId: recipe.id,
+                    recipeTitle: recipe.title,
+                    currentImageUrl: recipe.image, // 기존 이미지 URL
+                    matchedImageUrl: bestMatchUrl,
+                    confidence: maxScore,
+                    verified: recipe.imageVerified // 기존 imageVerified 상태
+                });
+            }
+        });
+        return matches;
     }
 };
