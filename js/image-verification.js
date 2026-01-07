@@ -23,11 +23,102 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Pexels API Key
     const PEXELS_API_KEY = 'WJdYLaLMxokly9sPiHieF3WQzlUVPJH8YCZ6mpwts4RGe34KcnfxnJXW';
 
+    // 음식명 영어 매핑 (Pexels 검색용)
+    const foodNameMapping = {
+        // 한식 - 찌개/국
+        '김치찌개': 'kimchi stew korean',
+        '된장찌개': 'doenjang soybean paste stew',
+        '순두부찌개': 'soft tofu stew korean',
+        '부대찌개': 'budae jjigae army stew',
+        '미역국': 'seaweed soup korean',
+        '삼계탕': 'samgyetang chicken ginseng soup',
+        '갈비탕': 'galbitang beef rib soup',
+        '설렁탕': 'seolleongtang ox bone soup',
+        // 한식 - 밥/면
+        '비빔밥': 'bibimbap korean rice bowl',
+        '볶음밥': 'fried rice asian',
+        '김밥': 'kimbap korean sushi roll',
+        '참치김밥': 'tuna kimbap roll',
+        '잡채': 'japchae glass noodles',
+        '칼국수': 'kalguksu knife noodles',
+        '냉면': 'naengmyeon cold noodles',
+        // 한식 - 고기
+        '불고기': 'bulgogi korean bbq beef',
+        '갈비': 'galbi korean bbq ribs',
+        '삼겹살': 'samgyeopsal pork belly',
+        '제육볶음': 'jeyuk bokkeum spicy pork',
+        // 한식 - 반찬
+        '계란말이': 'korean rolled omelette tamagoyaki',
+        '잡채': 'japchae glass noodles',
+        '떡볶이': 'tteokbokki spicy rice cake',
+        // 중식
+        '짜장면': 'jajangmyeon black bean noodles',
+        '짬뽕': 'jjamppong spicy seafood noodles',
+        '탕수육': 'tangsuyuk sweet sour pork',
+        '마파두부': 'mapo tofu spicy',
+        '동파육': 'dongpo pork braised',
+        // 일식
+        '초밥': 'sushi japanese',
+        '라멘': 'ramen japanese noodle soup',
+        '돈코츠 라멘': 'tonkotsu ramen pork bone',
+        '우동': 'udon noodles japanese',
+        '오야코동': 'oyakodon chicken egg rice bowl',
+        '카츠동': 'katsudon pork cutlet rice bowl',
+        '돈카츠': 'tonkatsu pork cutlet',
+        // 양식
+        '파스타': 'pasta italian',
+        '토마토 미트소스 파스타': 'spaghetti bolognese meat sauce',
+        '스테이크': 'steak beef',
+        '햄버거': 'hamburger burger',
+        '피자': 'pizza italian',
+        '샐러드': 'salad fresh',
+        '시저 샐러드': 'caesar salad',
+        '리조또': 'risotto italian rice',
+        // 동남아/기타
+        '팟타이': 'pad thai noodles',
+        '나시고랭': 'nasi goreng fried rice',
+        '쌀국수': 'pho vietnamese noodles',
+        '똠양꿍': 'tom yum soup thai',
+        '카레': 'curry rice',
+        '일본식 카레라이스': 'japanese curry rice',
+        '탄두리 치킨': 'tandoori chicken indian',
+        '난': 'naan bread indian',
+        // 멕시코
+        '타코': 'taco mexican',
+        '초리소 타코': 'chorizo taco mexican',
+        '부리토': 'burrito mexican',
+        '퀘사디아': 'quesadilla mexican',
+        // 분식/간식
+        '라볶이': 'rabokki ramen tteokbokki',
+        '순대': 'sundae blood sausage korean',
+        '튀김': 'korean fried food tempura',
+        '호떡': 'hotteok korean pancake',
+        '붕어빵': 'bungeoppang fish bread',
+        // 디저트/음료
+        '팬케이크': 'pancake breakfast',
+        '와플': 'waffle dessert',
+        '빙수': 'bingsu shaved ice korean',
+        '스무디': 'smoothie drink',
+        '딸기 스무디': 'strawberry smoothie',
+        '레몬에이드': 'lemonade drink',
+        '과일': 'fresh fruits',
+        // 기타
+        '샌드위치': 'sandwich',
+        '토스트': 'toast bread',
+        '오믈렛': 'omelette eggs',
+        '베이컨': 'bacon breakfast',
+        '소시지': 'sausage',
+    };
+
     // 이미지 검색 함수 (Pexels API 사용)
     async function searchImages(query, count = 5) {
+        // 영어 매핑 적용 (없으면 원본 + food 키워드)
+        const englishQuery = foodNameMapping[query] || query + ' food dish';
+        console.log(`검색어 변환: "${query}" → "${englishQuery}"`);
+
         try {
             const response = await fetch(
-                `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${count}`,
+                `https://api.pexels.com/v1/search?query=${encodeURIComponent(englishQuery)}&per_page=${count}`,
                 {
                     headers: {
                         'Authorization': PEXELS_API_KEY
