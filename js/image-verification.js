@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('=== DOMContentLoaded 시작 ===');
+
+    try {
     // 전역 변수 선언
     let foods = [];
     const duplicates = new Set();
@@ -60,9 +63,20 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    // Modal elements
+    // Modal elements (null 체크 포함)
+    console.log('=== DOM 요소 로드 시작 ===');
+
     const verificationModal = document.getElementById('verificationModal');
+    console.log('verificationModal:', verificationModal ? 'OK' : 'NULL!');
+
+    if (!verificationModal) {
+        console.error('verificationModal을 찾을 수 없습니다! 스크립트 중단.');
+        return;
+    }
+
     const closeButton = verificationModal.querySelector('.close-button');
+    console.log('closeButton:', closeButton ? 'OK' : 'NULL!');
+
     const modalCurrentImage = document.getElementById('modalCurrentImage');
     const modalCurrentTitle = document.getElementById('modalCurrentTitle');
     const imageSearchInput = document.getElementById('imageSearchInput');
@@ -70,6 +84,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     const searchResults = document.getElementById('searchResults');
     const modalSaveButton = document.getElementById('modalSaveButton');
     const modalCancelButton = document.getElementById('modalCancelButton');
+
+    console.log('imageSearchButton:', imageSearchButton ? 'OK' : 'NULL!');
+    console.log('searchResults:', searchResults ? 'OK' : 'NULL!');
+    console.log('=== DOM 요소 로드 완료 ===')
 
     let currentFoodId = null; // To keep track of which food item is being verified
 
@@ -316,6 +334,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     verificationModal.addEventListener('click', async (event) => {
         const searchBtn = event.target.closest('#imageSearchButton');
         if (searchBtn) {
+            console.log('imageSearchButton clicked!');
             const query = imageSearchInput.value;
             if (query) {
                 console.log('검색 시작:', query);
@@ -388,5 +407,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     // 페이지 로드 시 초기화 함수 실행
+    console.log('=== init() 호출 시작 ===');
     init();
+    console.log('=== 모든 초기화 완료 ===');
+
+    } catch (error) {
+        console.error('=== 초기화 에러 발생 ===');
+        console.error('에러 메시지:', error.message);
+        console.error('에러 스택:', error.stack);
+    }
 });
