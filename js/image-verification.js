@@ -312,12 +312,17 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
-    // 이미지 검색 버튼 클릭 이벤트
-    imageSearchButton.addEventListener('click', async () => {
-        const query = imageSearchInput.value;
-        if (query) {
-            const images = await searchImages(query);
-            displaySearchResults(images.map(img => img.url)); // URL만 추출하여 전달
+    // 이미지 검색 버튼 클릭 이벤트 (이벤트 위임 방식)
+    verificationModal.addEventListener('click', async (event) => {
+        const searchBtn = event.target.closest('#imageSearchButton');
+        if (searchBtn) {
+            const query = imageSearchInput.value;
+            if (query) {
+                console.log('검색 시작:', query);
+                const images = await searchImages(query);
+                console.log('검색 결과:', images);
+                displaySearchResults(images.map(img => img.url));
+            }
         }
     });
 
