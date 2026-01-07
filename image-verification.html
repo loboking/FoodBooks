@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodBooks - 이미지 검증 페이지</title>
-    <link rel="stylesheet" href="css/image-verification.css?v=20260107">
+    <link rel="stylesheet" href="css/image-verification.css?v=20260107b">
 </head>
 <body>
     <h1>FoodBooks 이미지 검증</h1>
@@ -63,10 +63,17 @@
         </div>
     </div>
 
+    <!-- Image Preview Modal (Lightbox) -->
+    <div id="imagePreviewModal">
+        <span class="close-preview">&times;</span>
+        <img id="previewImage" src="" alt="Preview">
+        <div class="preview-hint">클릭하거나 ESC를 눌러 닫기</div>
+    </div>
+
     <!-- Scripts at end of body -->
     <script src="js/utils.js?v=20260107"></script>
     <script src="js/db.js?v=20260107"></script>
     <script src="js/seed-data.js?v=20260107"></script>
-    <script src="js/image-verification.js?v=20260107e"></script>
+    <script src="js/image-verification.js?v=20260107f"></script>
 </body>
 </html>

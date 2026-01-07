@@ -186,10 +186,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     const modalSaveButton = document.getElementById('modalSaveButton');
     const modalCancelButton = document.getElementById('modalCancelButton');
     const loadMoreButton = document.getElementById('loadMoreButton');
+    const imagePreviewModal = document.getElementById('imagePreviewModal');
+    const previewImage = document.getElementById('previewImage');
+    const closePreview = imagePreviewModal ? imagePreviewModal.querySelector('.close-preview') : null;
 
     console.log('imageSearchButton:', imageSearchButton ? 'OK' : 'NULL!');
     console.log('searchResults:', searchResults ? 'OK' : 'NULL!');
     console.log('loadMoreButton:', loadMoreButton ? 'OK' : 'NULL!');
+    console.log('imagePreviewModal:', imagePreviewModal ? 'OK' : 'NULL!');
     console.log('=== DOM 요소 로드 완료 ===')
 
     let currentFoodId = null; // To keep track of which food item is being verified
@@ -479,7 +483,23 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    // 검색 결과 이미지 선택 이벤트
+    // 이미지 확대 모달 열기
+    function openPreview(imageUrl) {
+        if (imagePreviewModal && previewImage) {
+            previewImage.src = imageUrl;
+            imagePreviewModal.classList.add('show');
+        }
+    }
+
+    // 이미지 확대 모달 닫기
+    function closePreviewModal() {
+        if (imagePreviewModal) {
+            imagePreviewModal.classList.remove('show');
+            previewImage.src = '';
+        }
+    }
+
+    // 검색 결과 이미지 클릭 이벤트 (선택 또는 확대)
     searchResults.addEventListener('click', (event) => {
         if (event.target.tagName === 'IMG') {
             const currentlySelected = searchResults.querySelector('.selected');
@@ -487,6 +507,31 @@ document.addEventListener('DOMContentLoaded', async function() {
                 currentlySelected.classList.remove('selected');
             }
             event.target.classList.add('selected');
+        }
+    });
+
+    // 검색 결과 이미지 더블클릭 시 확대
+    searchResults.addEventListener('dblclick', (event) => {
+        if (event.target.tagName === 'IMG') {
+            openPreview(event.target.src);
+        }
+    });
+
+    // 이미지 확대 모달 닫기 이벤트
+    if (imagePreviewModal) {
+        imagePreviewModal.addEventListener('click', closePreviewModal);
+    }
+    if (closePreview) {
+        closePreview.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closePreviewModal();
+        });
+    }
+
+    // ESC 키로 확대 모달 닫기
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && imagePreviewModal && imagePreviewModal.classList.contains('show')) {
+            closePreviewModal();
         }
     });
 
