@@ -26,6 +26,9 @@ const App = {
             // 네비게이션 이벤트 바인딩
             this.bindNavigation();
 
+            // 브라우저 뒤로가기 이벤트 바인딩
+            this.bindBrowserHistory();
+
             // 초기 페이지 로드
             this.navigateTo('home');
 
@@ -50,9 +53,31 @@ const App = {
     },
 
     /**
-     * 페이지 이동
+     * 브라우저 히스토리 이벤트 바인딩
      */
-    async navigateTo(page, params = {}) {
+    bindBrowserHistory() {
+        window.addEventListener('popstate', (event) => {
+            if (event.state) {
+                // 브라우저 뒤로가기/앞으로가기 시
+                this.currentPage = event.state.page;
+                this.currentParams = event.state.params || {};
+                this.updateNavigation(this.currentPage);
+                this.updateHeader(this.currentPage, this.currentParams);
+                this.renderPage(this.currentPage, this.currentParams);
+            } else {
+                // state가 없으면 홈으로
+                this.navigateTo('home', {}, false);
+            }
+        });
+    },
+
+    /**
+     * 페이지 이동
+     * @param {string} page - 이동할 페이지
+     * @param {object} params - 페이지 파라미터
+     * @param {boolean} pushHistory - 브라우저 히스토리에 추가 여부 (기본: true)
+     */
+    async navigateTo(page, params = {}, pushHistory = true) {
         // 히스토리에 현재 페이지 저장
         if (this.currentPage !== page || JSON.stringify(this.currentParams) !== JSON.stringify(params)) {
             this.history.push({ page: this.currentPage, params: this.currentParams });
@@ -60,6 +85,13 @@ const App = {
 
         this.currentPage = page;
         this.currentParams = params;
+
+        // 브라우저 히스토리에 추가
+        if (pushHistory) {
+            const state = { page, params };
+            const url = `#${page}${params.id ? '/' + params.id : ''}`;
+            window.history.pushState(state, '', url);
+        }
 
         // 네비게이션 활성화 상태 업데이트
         this.updateNavigation(page);
@@ -75,14 +107,11 @@ const App = {
      * 뒤로 가기
      */
     async goBack() {
-        if (this.history.length > 0) {
-            const prev = this.history.pop();
-            this.currentPage = prev.page;
-            this.currentParams = prev.params;
-            this.updateNavigation(prev.page);
-            this.updateHeader(prev.page, prev.params);
-            await this.renderPage(prev.page, prev.params);
+        // 브라우저 히스토리 사용
+        if (window.history.length > 1) {
+            window.history.back();
         } else {
+            // 히스토리가 없으면 홈으로
             this.navigateTo('home');
         }
     },
