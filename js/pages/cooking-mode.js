@@ -7,6 +7,7 @@ const CookingModePage = {
     recipe: null,
     currentStep: 0,
     wakeLock: null,
+    notificationPermission: 'default',
     timer: {
         intervalId: null,
         seconds: 0,
@@ -51,6 +52,7 @@ const CookingModePage = {
         const steps = this.recipe.steps;
         const step = steps[this.currentStep];
         const stepText = typeof step === 'object' ? (step.text || '') : step;
+        const stepImage = typeof step === 'object' ? (step.image || null) : null;
         const extractedTime = Utils.extractTimeFromText(stepText);
 
         return `
@@ -75,6 +77,11 @@ const CookingModePage = {
 
                 <!-- 단계 내용 -->
                 <div class="cooking-content">
+                    ${stepImage ? `
+                        <div class="cooking-step-image">
+                            <img src="${stepImage}" alt="단계 ${this.currentStep + 1}" onclick="this.classList.toggle('expanded')">
+                        </div>
+                    ` : ''}
                     <div class="step-number">STEP ${this.currentStep + 1}</div>
                     <div class="step-text">${Utils.escapeHtml(stepText)}</div>
 
@@ -175,7 +182,10 @@ const CookingModePage = {
     /**
      * 이벤트 바인딩
      */
-    init() {
+    async init() {
+        // 알림 권한 요청
+        await this.requestNotificationPermission();
+
         // 에러 상태의 돌아가기 버튼
         const goBackBtn = document.getElementById('goBackBtn');
         if (goBackBtn) {
@@ -442,6 +452,9 @@ const CookingModePage = {
             navigator.vibrate([200, 100, 200, 100, 200]);
         }
 
+        // 시스템 알림
+        this.showNotification('타이머 완료!', '요리 단계가 완료되었습니다. 다음 단계로 진행하세요.');
+
         Utils.showToast('타이머 완료!', 'success');
     },
 
@@ -487,6 +500,56 @@ const CookingModePage = {
         const btn = document.getElementById('timerToggleBtn');
         if (btn) {
             btn.textContent = this.timer.isRunning ? '일시정지' : '시작';
+        }
+    },
+
+    /**
+     * 알림 권한 요청
+     */
+    async requestNotificationPermission() {
+        if (!('Notification' in window)) {
+            console.log('브라우저가 알림을 지원하지 않습니다');
+            return;
+        }
+
+        this.notificationPermission = Notification.permission;
+
+        if (this.notificationPermission === 'default') {
+            try {
+                const permission = await Notification.requestPermission();
+                this.notificationPermission = permission;
+                console.log('알림 권한:', permission);
+            } catch (error) {
+                console.error('알림 권한 요청 실패:', error);
+            }
+        }
+    },
+
+    /**
+     * 알림 표시
+     */
+    showNotification(title, body) {
+        if (this.notificationPermission !== 'granted') {
+            console.log('알림 권한이 없습니다');
+            return;
+        }
+
+        try {
+            const notification = new Notification(title, {
+                body: body,
+                icon: '/favicon.ico',
+                badge: '/favicon.ico',
+                tag: 'foodbooks-timer',
+                requireInteraction: true
+            });
+
+            // 알림 클릭 시 앱으로 복귀
+            notification.onclick = () => {
+                window.focus();
+                notification.close();
+            };
+        } catch (error) {
+            console.error('알림 표시 실패:', error);
         }
     },
 

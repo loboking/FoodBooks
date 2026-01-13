@@ -48,6 +48,9 @@ const RecipesPage = {
                                placeholder="레시피, 재료 검색..."
                                value="${Utils.escapeHtml(this.currentFilters.query)}">
                         <button id="searchBtn" class="search-btn">검색</button>
+                        <button id="smartSearchBtn" class="smart-search-btn" title="스마트 검색">
+                            🥕
+                        </button>
                     </div>
                 </section>
 
@@ -776,7 +779,216 @@ const RecipesPage = {
         this.updateSortUI();
         this.updateSubcategoryFilter();
         this.refreshRecipeList();
+    },
 
-        Utils.showToast('필터가 초기화되었습니다.', 'success');
+    /**
+     * 스마트 검색 모달 렌더링
+     */
+    renderSmartSearchModal() {
+        return `
+            <div id="smartSearchModal" class="modal hidden">
+                <div class="modal smart-search-modal">
+                    <div class="modal-header">
+                        <h2 class="modal-title">🥕 스마트 검색</h2>
+                        <button class="icon-btn modal-close" onclick="RecipesPage.closeSmartSearchModal()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="smart-search-desc">가진 재료를 입력하면, 해당 재료를 포함하는 레시피를 찾아줍니다.</p>
+                        
+                        <div class="smart-search-input-section">
+                            <label class="form-label">가진 재료 (쉼표로 구분)</label>
+                            <textarea id="smartSearchIngredients"
+                                      class="form-textarea"
+                                      rows="3"
+                                      placeholder="예: 김치, 돼지고기, 대파, 계란"></textarea>
+                            <div id="ingredientAutocomplete" class="autocomplete-dropdown hidden"></div>
+                        </div>
+
+                        <div class="smart-search-options">
+                            <label class="form-label">정렬</label>
+                            <select id="smartSearchSort" class="form-input">
+                                <option value="matchRate">매칭률 순</option>
+                                <option value="newest">최신순</option>
+                                <option value="name">이름순</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="RecipesPage.closeSmartSearchModal()">취소</button>
+                        <button class="btn btn-primary" onclick="RecipesPage.executeSmartSearch()">검색</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    /**
+     * 스마트 검색 모달 열기
+     */
+    async openSmartSearchModal() {
+        const modalContainer = document.getElementById('modalContainer');
+        if (!modalContainer) return;
+
+        modalContainer.innerHTML = this.renderSmartSearchModal();
+        document.getElementById('smartSearchModal').classList.remove('hidden');
+
+        // 자동완성 초기화
+        const input = document.getElementById('smartSearchIngredients');
+        if (input) {
+            input.addEventListener('input', (e) => this.handleIngredientInput(e));
+            input.addEventListener('focus', () => this.handleIngredientInput({ target: input }));
+        }
+
+        // 모달 외부 클릭 시 닫기
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer) {
+                this.closeSmartSearchModal();
+            }
+        });
+    },
+
+    /**
+     * 스마트 검색 모달 닫기
+     */
+    closeSmartSearchModal() {
+        const modal = document.getElementById('smartSearchModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    },
+
+    /**
+     * 재료 입력 처리 (자동완성)
+     */
+    async handleIngredientInput(e) {
+        const input = e.target;
+        const value = input.value;
+        const autocomplete = document.getElementById('ingredientAutocomplete');
+
+        if (!autocomplete) return;
+
+        // 현재 입력된 마지막 단어 추출
+        const words = value.split(/[,，]/).map(w => w.trim());
+        const lastWord = words[words.length - 1] || '';
+
+        if (lastWord.length < 1) {
+            autocomplete.classList.add('hidden');
+            return;
+        }
+
+        // 자동완성 가져오기
+        const allIngredients = await db.getAllIngredientNames();
+        const matches = allIngredients.filter(ing =>
+            ing.toLowerCase().includes(lastWord.toLowerCase())
+        ).slice(0, 10);
+
+        if (matches.length > 0) {
+            autocomplete.innerHTML = matches.map(ing => `
+                <div class="autocomplete-item" data-value="${Utils.escapeHtml(ing)}">
+                    ${Utils.escapeHtml(ing)}
+                </div>
+            `).join('');
+            autocomplete.classList.remove('hidden');
+
+            // 자동완성 항목 클릭 이벤트
+            autocomplete.querySelectorAll('.autocomplete-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const selectedValue = item.dataset.value;
+                    const newWords = [...words.slice(0, -1), selectedValue];
+                    input.value = newWords.join(', ');
+                    autocomplete.classList.add('hidden');
+                    input.focus();
+                });
+            });
+        } else {
+            autocomplete.classList.add('hidden');
+        }
+    },
+
+    /**
+     * 스마트 검색 실행
+     */
+    async executeSmartSearch() {
+        const input = document.getElementById('smartSearchIngredients');
+        const sortSelect = document.getElementById('smartSearchSort');
+
+        if (!input || !sortSelect) return;
+
+        const ingredientsText = input.value.trim();
+        if (!ingredientsText) {
+            Utils.showToast('재료를 입력해주세요', 'error');
+            return;
+        }
+
+        const ingredients = ingredientsText.split(/[,，]/).map(ing => ing.trim()).filter(ing => ing.length > 0);
+
+        try {
+            const results = await db.searchByIngredients(ingredients);
+
+            this.closeSmartSearchModal();
+
+            // 정렬 적용
+            const sortBy = sortSelect.value;
+            let sortedResults = [...results];
+
+            if (sortBy === 'newest') {
+                sortedResults.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            } else if (sortBy === 'name') {
+                sortedResults.sort((a, b) => a.title.localeCompare(b.title, 'ko'));
+            }
+            // matchRate는 기본 정렬 유지
+
+            // 레시피 목록 표시
+            this.displaySmartSearchResults(sortedResults, ingredients);
+        } catch (error) {
+            console.error('스마트 검색 실패:', error);
+            Utils.showToast('검색에 실패했습니다', 'error');
+        }
+    },
+
+    /**
+     * 스마트 검색 결과 표시
+     */
+    displaySmartSearchResults(results, ingredients) {
+        const recipesSection = document.querySelector('.recipes-list-section');
+        if (!recipesSection) return;
+
+        if (results.length === 0) {
+            recipesSection.innerHTML = `
+                <div class="empty-recipes">
+                    <span class="empty-icon">🥕</span>
+                    <h3 class="empty-title">일치하는 레시피가 없습니다</h3>
+                    <p class="empty-description">
+                        입력한 재료: ${ingredients.map(ing => Utils.escapeHtml(ing)).join(', ')}
+                    </p>
+                    <button class="btn btn-secondary" onclick="RecipesPage.init();">
+                        전체 레시피 보기
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        recipesSection.innerHTML = `
+            <div class="recipes-header">
+                <span class="recipes-count">${results.length}개의 레시피</span>
+                <button class="btn btn-small" onclick="RecipesPage.init();">전체 레시피 보기</button>
+            </div>
+            <div class="recipe-grid">
+                ${results.map(recipe => `
+                    <div class="recipe-card" data-recipe-id="${recipe.id}">
+                        ${this.renderRecipeCard(recipe)}
+                        ${recipe.matchRate !== undefined ? `
+                            <div class="match-rate-badge">
+                                ${recipe.matchRate}% 일치
+                                <small>(${recipe.matchedCount}/${recipe.totalIngredients})</small>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        this.bindRecipeCardEvents();
     }
 };

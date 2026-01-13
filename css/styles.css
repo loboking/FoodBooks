@@ -2206,3 +2206,248 @@ input, textarea, select {
     text-align: center;
     font-size: 0.8125rem;
 }
+
+/* ===== 별점 컴포넌트 ===== */
+.star-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.star-rating-small .star {
+    font-size: 1rem;
+}
+
+.star-rating-medium .star {
+    font-size: 1.25rem;
+}
+
+.star-rating-large .star {
+    font-size: 1.5rem;
+}
+
+.star {
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+
+.star.star-filled {
+    color: #ffc107;
+}
+
+.star.star-half {
+    background: linear-gradient(90deg, #ffc107 50%, var(--text-muted) 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.star.star-empty {
+    color: var(--text-muted);
+}
+
+.star-rating-input {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.star-rating-input .star-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    line-height: 1;
+}
+
+.star-rating-input .star-btn:hover {
+    color: #ffc107;
+}
+
+.star-rating-input .star-btn.star-filled {
+    color: #ffc107;
+}
+
+.star-rating-input .star-btn.star-empty {
+    color: var(--text-muted);
+}
+
+.rating-value {
+    margin-left: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.rating-label {
+    margin-top: 8px;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+/* ===== 리뷰 모달 ===== */
+.modal-review {
+    max-width: 500px;
+    width: 90%;
+}
+
+.review-recipe-title {
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.review-rating-section {
+    margin-bottom: 20px;
+}
+
+.review-text-section {
+    margin-bottom: 16px;
+}
+
+.review-text-section .form-textarea {
+    width: 100%;
+    min-height: 100px;
+}
+
+.review-author-section {
+    margin-bottom: 16px;
+}
+
+.char-count {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ===== 리뷰 리스트 ===== */
+.recipe-reviews-section {
+    margin-top: 32px;
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: var(--radius);
+}
+
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.review-summary {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.review-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.review-item {
+    padding: 16px;
+    background-color: var(--card-background);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.review-author {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+}
+
+.review-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.review-rating {
+    margin-bottom: 12px;
+}
+
+.review-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.empty-reviews {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--text-muted);
+}
+
+.empty-reviews .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.empty-reviews p {
+    font-size: 0.9375rem;
+}
+
+/* ===== 요리 모드 단계별 이미지 ===== */
+.cooking-step-image {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 20px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background-color: var(--background-color);
+}
+
+.cooking-step-image img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: height 0.3s ease;
+}
+
+.cooking-step-image img.expanded {
+    height: auto;
+    max-height: 600px;
+}
+
+.cooking-step-image img:active {
+    transform: scale(0.98);
+}
+
+/* ===== 레시피 폼 드래그 핸들 ===== */
+.step-drag-handle {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    cursor: grab;
+    user-select: none;
+    padding: 8px 0;
+}
+
+.step-drag-handle:active {
+    cursor: grabbing;
+}
+
+.step-row.dragging {
+    opacity: 0.5;
+    background-color: var(--background-color);
+}
+
+.step-row.drag-over {
+    border-top: 2px solid var(--primary-color);
+}

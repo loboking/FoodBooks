@@ -865,5 +865,304 @@ const Components = {
      */
     showToast(message, type = 'default') {
         Utils.showToast(message, type);
+    },
+
+    /**
+     * 별점 컴포넌트 (읽기 전용)
+     * @param {Object} options - 옵션
+     * @returns {string} HTML 문자열
+     */
+    StarRating(options = {}) {
+        const {
+            rating = 0,
+            maxRating = 5,
+            size = 'medium',
+            showValue = false
+        } = options;
+
+        const filledStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+        const emptyStars = maxRating - filledStars - (hasHalfStar ? 1 : 0);
+
+        let starsHtml = '';
+        
+        for (let i = 0; i < filledStars; i++) {
+            starsHtml += '<span class="star star-filled">★</span>';
+        }
+        
+        if (hasHalfStar) {
+            starsHtml += '<span class="star star-half">★</span>';
+        }
+        
+        for (let i = 0; i < emptyStars; i++) {
+            starsHtml += '<span class="star star-empty">★</span>';
+        }
+
+        const valueHtml = showValue ? `<span class="rating-value">${rating}</span>` : '';
+
+        return `
+            <div class="star-rating star-rating-${size}">
+                ${starsHtml}
+                ${valueHtml}
+            </div>
+        `;
+    },
+
+    /**
+     * 별점 입력 컴포넌트
+     * @param {Object} options - 옵션
+     * @returns {string} HTML 문자열
+     */
+    StarRatingInput(options = {}) {
+        const {
+            id = 'starRating',
+            rating = 0,
+            maxRating = 5,
+            size = 'large',
+            onChange = null
+        } = options;
+
+        const onChangeAttr = onChange ? `data-onchange="${onChange}"` : '';
+        let starsHtml = '';
+
+        for (let i = 1; i <= maxRating; i++) {
+            const isFilled = i <= rating;
+            starsHtml += `
+                <button type="button"
+                        class="star-btn ${isFilled ? 'star-filled' : 'star-empty'}"
+                        data-value="${i}"
+                        onclick="Components.setStarRating('${id}', ${i})"
+                        onmouseover="Components.hoverStarRating('${id}', ${i})"
+                        onmouseout="Components.resetStarRating('${id}', ${rating})"
+                        aria-label="${i}점">
+                    ★
+                </button>
+            `;
+        }
+
+        return `
+            <div id="${id}" class="star-rating-input star-rating-${size}" ${onChangeAttr} data-rating="${rating}">
+                ${starsHtml}
+                <input type="hidden" name="${id}" value="${rating}" id="${id}-value">
+            </div>
+        `;
+    },
+
+    /**
+     * 별점 설정
+     * @param {string} inputId - 입력 컴포넌트 ID
+     * @param {number} value - 설정할 별점
+     */
+    setStarRating(inputId, value) {
+        const container = document.getElementById(inputId);
+        if (!container) return;
+
+        const buttons = container.querySelectorAll('.star-btn');
+        buttons.forEach((btn, index) => {
+            const btnValue = parseInt(btn.dataset.value);
+            btn.classList.toggle('star-filled', btnValue <= value);
+            btn.classList.toggle('star-empty', btnValue > value);
+        });
+
+        container.dataset.rating = value;
+        const hiddenInput = container.querySelector('input[type="hidden"]');
+        if (hiddenInput) hiddenInput.value = value;
+
+        // 커스텀 이벤트 발생
+        container.dispatchEvent(new CustomEvent('ratingChange', {
+            bubbles: true,
+            detail: { rating: value }
+        }));
+
+        // onChange 콜백 실행
+        const onChange = container.dataset.onchange;
+        if (onChange && typeof window[onChange] === 'function') {
+            window[onChange](value);
+        }
+    },
+
+    /**
+     * 별점 호버 효과
+     * @param {string} inputId - 입력 컴포넌트 ID
+     * @param {number} value - 호버할 별점
+     */
+    hoverStarRating(inputId, value) {
+        const container = document.getElementById(inputId);
+        if (!container) return;
+
+        const buttons = container.querySelectorAll('.star-btn');
+        buttons.forEach((btn) => {
+            const btnValue = parseInt(btn.dataset.value);
+            btn.classList.toggle('star-filled', btnValue <= value);
+            btn.classList.toggle('star-empty', btnValue > value);
+        });
+    },
+
+    /**
+     * 별점 호버 리셋
+     * @param {string} inputId - 입력 컴포넌트 ID
+     * @param {number} originalRating - 원래 별점
+     */
+    resetStarRating(inputId, originalRating) {
+        this.setStarRating(inputId, originalRating);
+    },
+
+    /**
+     * 별점 값 가져오기
+     * @param {string} inputId - 입력 컴포넌트 ID
+     * @returns {number} 별점 값
+     */
+    getStarRatingValue(inputId) {
+        const container = document.getElementById(inputId);
+        if (!container) return 0;
+        return parseInt(container.dataset.rating) || 0;
+    },
+
+    /**
+     * 리뷰 모달 컴포넌트
+     * @param {Object} options - 옵션
+     * @returns {string} HTML 문자열
+     */
+    ReviewModal(options = {}) {
+        const {
+            id = 'reviewModal',
+            recipeTitle = '',
+            onSubmit = null
+        } = options;
+
+        const onSubmitAttr = onSubmit ? `data-onsubmit="${onSubmit}"` : '';
+
+        return `
+            <div id="${id}" class="modal-container hidden" ${onSubmitAttr}>
+                <div class="modal modal-review">
+                    <div class="modal-header">
+                        <h2 class="modal-title">레시피 평가하기</h2>
+                        <button class="icon-btn modal-close" onclick="Components.closeModal('${id}')">
+                            &#10005;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="review-recipe-title">${Utils.escapeHtml(recipeTitle)}</p>
+                        
+                        <div class="review-rating-section">
+                            <label class="form-label">별점</label>
+                            ${this.StarRatingInput({
+                                id: id + '-rating',
+                                rating: 0,
+                                maxRating: 5,
+                                size: 'large',
+                                onChange: `Components.updateReviewRatingLabel('${id}')`
+                            })}
+                            <p class="rating-label" id="${id}-ratingLabel">별점을 선택해주세요</p>
+                        </div>
+
+                        <div class="review-text-section">
+                            <label class="form-label">후기</label>
+                            <textarea class="form-textarea" 
+                                      id="${id}-reviewText"
+                                      rows="4" 
+                                      maxlength="500"
+                                      placeholder="이 레시피에 대한 후기를 작성해주세요 (선택)"></textarea>
+                            <p class="char-count">0/500</p>
+                        </div>
+
+                        <div class="review-author-section">
+                            <label class="form-label">작성자</label>
+                            <input type="text" 
+                                   class="form-input" 
+                                   id="${id}-author"
+                                   maxlength="20"
+                                   placeholder="닉네임 (선택, 기본: 익명)">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="Components.closeModal('${id}')">취소</button>
+                        <button class="btn btn-primary" onclick="Components.submitReview('${id}')">저장</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    /**
+     * 별점 라벨 업데이트
+     * @param {string} modalId - 모달 ID
+     */
+    updateReviewRatingLabel(modalId) {
+        const rating = this.getStarRatingValue(modalId + '-rating');
+        const labelEl = document.getElementById(modalId + '-ratingLabel');
+        if (!labelEl) return;
+
+        const labels = ['', '별로예요', '그저그래요', '보통이에요', '좋아요', '아주좋아요'];
+        labelEl.textContent = labels[rating] || '별점을 선택해주세요';
+    },
+
+    /**
+     * 리뷰 제출
+     * @param {string} modalId - 모달 ID
+     */
+    async submitReview(modalId) {
+        const ratingInput = this.getStarRatingValue(modalId + '-rating');
+        
+        if (ratingInput === 0) {
+            this.showToast('별점을 선택해주세요', 'error');
+            return;
+        }
+
+        const reviewText = document.getElementById(modalId + '-reviewText').value.trim();
+        const author = document.getElementById(modalId + '-author').value.trim() || '익명';
+        
+        const container = document.getElementById(modalId);
+        const onSubmit = container.dataset.onsubmit;
+        
+        if (onSubmit && typeof window[onSubmit] === 'function') {
+            await window[onSubmit]({ rating: ratingInput, review: reviewText, author });
+        }
+    },
+
+    /**
+     * 리뷰 목록 컴포넌트
+     * @param {Object} options - 옵션
+     * @returns {string} HTML 문자열
+     */
+    ReviewList(options = {}) {
+        const {
+            id = 'reviewList',
+            reviews = [],
+            emptyMessage = '아직 후기가 없습니다'
+        } = options;
+
+        if (reviews.length === 0) {
+            return `
+                <div id="${id}" class="review-list">
+                    <div class="empty-reviews">
+                        <span class="empty-icon">&#128483;</span>
+                        <p>${emptyMessage}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        const reviewsHtml = reviews.map(review => `
+            <div class="review-item" data-id="${review.id}">
+                <div class="review-header">
+                    <span class="review-author">${Utils.escapeHtml(review.author || '익명')}</span>
+                    <span class="review-date">${Utils.formatRelativeTime(review.createdAt)}</span>
+                </div>
+                <div class="review-rating">
+                    ${this.StarRating({ rating: review.rating, size: 'small' })}
+                </div>
+                ${review.review ? `<p class="review-text">${Utils.escapeHtml(review.review)}</p>` : ''}
+            </div>
+        `).join('');
+
+        return `
+            <div id="${id}" class="review-list">
+                <div class="review-summary">
+                    <span class="review-count">${reviews.length}개의 후기</span>
+                </div>
+                ${reviewsHtml}
+            </div>
+        `;
     }
 };

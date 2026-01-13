@@ -3,7 +3,7 @@
  */
 
 const DB_NAME = 'FoodBooksDB';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 class FoodBooksDB {
     constructor() {
@@ -66,6 +66,28 @@ class FoodBooksDB {
                 // 카테고리 저장소
                 if (!db.objectStoreNames.contains('categories')) {
                     db.createObjectStore('categories', { keyPath: 'id' });
+                }
+
+                // 리뷰 저장소 (새로 추가)
+                if (!db.objectStoreNames.contains('reviews')) {
+                    const reviewStore = db.createObjectStore('reviews', { keyPath: 'id' });
+                    reviewStore.createIndex('recipeId', 'recipeId', { unique: false });
+                    reviewStore.createIndex('createdAt', 'createdAt', { unique: false });
+                } else {
+                    // 기존 스토어에 새로운 인덱스 추가
+                    const reviewStore = event.target.transaction.objectStore('reviews');
+                    if (!reviewStore.indexNames.contains('recipeId')) {
+                        reviewStore.createIndex('recipeId', 'recipeId', { unique: false });
+                    }
+                    if (!reviewStore.indexNames.contains('createdAt')) {
+                        reviewStore.createIndex('createdAt', 'createdAt', { unique: false });
+                    }
+                }
+
+                // recipes 스토어에 새로운 인덱스 추가 (별점 관련)
+                const recipeStore = event.target.transaction.objectStore('recipes');
+                if (!recipeStore.indexNames.contains('averageRating')) {
+                    recipeStore.createIndex('averageRating', 'averageRating', { unique: false });
                 }
             };
         });
@@ -409,6 +431,184 @@ class FoodBooksDB {
      */
     generateId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    /**
+     * 리뷰 추가
+     */
+    async addReview(recipeId, rating, reviewText, author = '익명') {
+        const id = this.generateId();
+        const newReview = {
+            id,
+            recipeId,
+            rating: parseInt(rating),
+            review: reviewText,
+            author,
+            createdAt: new Date().toISOString()
+        };
+
+        const result = new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['reviews'], 'readwrite');
+            const store = transaction.objectStore('reviews');
+            const request = store.add(newReview);
+
+            request.onsuccess = () => resolve(newReview);
+            request.onerror = () => reject(request.error);
+        });
+
+        // 리뷰 추가 후 레시피의 평균 별점 업데이트
+        await this.updateRecipeRating(recipeId);
+        return result;
+    }
+
+    /**
+     * 레시피별 리뷰 조회
+     */
+    async getReviews(recipeId) {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['reviews'], 'readonly');
+            const store = transaction.objectStore('reviews');
+            const index = store.index('recipeId');
+            const request = index.getAll(IDBKeyRange.only(recipeId));
+
+            request.onsuccess = () => {
+                const reviews = request.result || [];
+                reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                resolve(reviews);
+            };
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    /**
+     * 모든 리뷰 조회
+     */
+    async getAllReviews() {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['reviews'], 'readonly');
+            const store = transaction.objectStore('reviews');
+            const request = store.getAll();
+
+            request.onsuccess = () => resolve(request.result || []);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    /**
+     * 리뷰 삭제
+     */
+    async deleteReview(reviewId) {
+        const review = await this.getReview(reviewId);
+        if (!review) {
+            throw new Error('Review not found');
+        }
+
+        await new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['reviews'], 'readwrite');
+            const store = transaction.objectStore('reviews');
+            const request = store.delete(reviewId);
+
+            request.onsuccess = () => resolve(true);
+            request.onerror = () => reject(request.error);
+        });
+
+        // 리뷰 삭제 후 레시피의 평균 별점 업데이트
+        await this.updateRecipeRating(review.recipeId);
+        return true;
+    }
+
+    /**
+     * 단일 리뷰 조회
+     */
+    async getReview(reviewId) {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['reviews'], 'readonly');
+            const store = transaction.objectStore('reviews');
+            const request = store.get(reviewId);
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    /**
+     * 레시피의 평균 별점 계산 및 업데이트
+     */
+    async updateRecipeRating(recipeId) {
+        const reviews = await this.getReviews(recipeId);
+
+        if (reviews.length === 0) {
+            await this.updateRecipe(recipeId, {
+                averageRating: 0,
+                reviewCount: 0
+            });
+            return { averageRating: 0, count: 0 };
+        }
+
+        const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+        const averageRating = Math.round((sum / reviews.length) * 10) / 10;
+
+        await this.updateRecipe(recipeId, {
+            averageRating,
+            reviewCount: reviews.length
+        });
+
+        return { averageRating, count: reviews.length };
+    }
+
+    /**
+     * 평균 별점으로 정렬된 레시피 조회
+     */
+    async getRecipesByRating(minRating = 0) {
+        const recipes = await this.getAllRecipes();
+        return recipes.filter(recipe =>
+            recipe.averageRating && recipe.averageRating >= minRating
+        ).sort((a, b) => b.averageRating - a.averageRating);
+    }
+
+    /**
+     * 모든 재료명 반환 (자동완성용)
+     */
+    async getAllIngredientNames() {
+        const recipes = await this.getAllRecipes();
+        const ingredientNames = new Set();
+
+        recipes.forEach(recipe => {
+            (recipe.ingredients || []).forEach(ing => {
+                if (ing.name && ing.name.trim()) {
+                    ingredientNames.add(ing.name.trim().toLowerCase());
+                }
+            });
+        });
+
+        return Array.from(ingredientNames).sort();
+    }
+
+    /**
+     * 재료 기반 레시피 검색 (스마트 검색)
+     */
+    async searchByIngredients(searchIngredients) {
+        const recipes = await this.getAllRecipes();
+        const searchIngredientsLower = searchIngredients.map(ing => ing.toLowerCase());
+
+        return recipes.map(recipe => {
+            const recipeIngredients = (recipe.ingredients || []).map(ing => ing.name.toLowerCase());
+            const matchedIngredients = recipeIngredients.filter(ing =>
+                searchIngredientsLower.some(searchIng => ing.includes(searchIng) || searchIng.includes(ing))
+            );
+
+            const totalIngredients = recipeIngredients.length;
+            const matchedCount = matchedIngredients.length;
+            const matchRate = totalIngredients > 0 ? (matchedCount / totalIngredients) * 100 : 0;
+
+            return {
+                ...recipe,
+                matchRate: Math.round(matchRate),
+                matchedCount,
+                totalIngredients
+            };
+        }).filter(recipe => recipe.matchRate > 0)
+          .sort((a, b) => b.matchRate - a.matchRate);
     }
 }
 

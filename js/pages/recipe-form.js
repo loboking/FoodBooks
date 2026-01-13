@@ -236,8 +236,9 @@ const RecipeFormPage = {
      */
     renderStepInputs() {
         return this.steps.map((step, index) => `
-            <div class="dynamic-list-item step-row" data-index="${index}" style="flex-direction: column; gap: 8px;">
-                <div style="display: flex; gap: 8px; width: 100%;">
+            <div class="dynamic-list-item step-row" data-index="${index}" draggable="true" style="flex-direction: column; gap: 8px;">
+                <div style="display: flex; gap: 8px; width: 100%; align-items: flex-start;">
+                    <div class="step-drag-handle" style="cursor: move; padding: 8px;">☰</div>
                     <div class="step-number">${index + 1}</div>
                     <textarea class="form-input step-text" placeholder="조리 방법을 입력하세요"
                               style="flex: 1; min-height: 80px;">${Utils.escapeHtml(step.text || '')}</textarea>
@@ -511,7 +512,72 @@ const RecipeFormPage = {
                     this.syncSteps();
                 }
             });
+
+            // 드래그앤드롭 이벤트 초기화
+            this.initDragAndDrop(stepsList);
         }
+    },
+
+    /**
+     * 드래그앤드롭 초기화
+     */
+    initDragAndDrop(stepsList) {
+        let draggedItem = null;
+
+        stepsList.addEventListener('dragstart', (e) => {
+            draggedItem = e.target.closest('.step-row');
+            if (draggedItem) {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', draggedItem.innerHTML);
+                draggedItem.style.opacity = '0.4';
+            }
+        });
+
+        stepsList.addEventListener('dragend', (e) => {
+            if (draggedItem) {
+                draggedItem.style.opacity = '1';
+                draggedItem = null;
+            }
+        });
+
+        stepsList.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const targetItem = e.target.closest('.step-row');
+            if (targetItem && targetItem !== draggedItem) {
+                const rect = targetItem.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+
+                if (e.clientY < midY) {
+                    targetItem.parentNode.insertBefore(draggedItem, targetItem);
+                } else {
+                    targetItem.parentNode.insertBefore(draggedItem, targetItem.nextSibling);
+                }
+            }
+        });
+
+        stepsList.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (draggedItem) {
+                this.syncStepsOrder();
+            }
+        });
+    },
+
+    /**
+     * 드래그앤드롭 후 단계 순서 동기화
+     */
+    syncStepsOrder() {
+        const rows = document.querySelectorAll('.step-row');
+        const newSteps = [];
+        rows.forEach((row, index) => {
+            const oldIndex = parseInt(row.dataset.index);
+            if (this.steps[oldIndex]) {
+                newSteps.push(this.steps[oldIndex]);
+            }
+        });
+
+        this.steps = newSteps;
+        this.refreshStepsList();
     },
 
     /**

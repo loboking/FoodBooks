@@ -133,6 +133,12 @@ const RecipeDetailPage = {
                             <span>👥</span>
                             <span>${recipe.servings || 1}인분</span>
                         </div>
+                        ${recipe.averageRating && recipe.averageRating > 0 ? `
+                            <div class="recipe-detail-meta-item">
+                                <span>⭐</span>
+                                <span>${recipe.averageRating} (${recipe.reviewCount || 0})</span>
+                            </div>
+                        ` : ''}
                     </div>
 
                     <!-- 태그 -->
@@ -180,6 +186,15 @@ const RecipeDetailPage = {
                 <div class="recipe-steps">
                     <h3 class="section-title">조리 순서</h3>
                     ${this.renderSteps()}
+                </div>
+
+                <!-- 리뷰 섹션 -->
+                <div class="recipe-reviews-section">
+                    <div class="flex-between mb-16">
+                        <h3 class="section-title">리뷰</h3>
+                        <button class="btn btn-small" id="writeReviewBtn">후기 작성</button>
+                    </div>
+                    <div id="reviewListContainer">리뷰를 불러오는 중...</div>
                 </div>
 
                 <!-- 맛집 추천 -->
@@ -340,7 +355,28 @@ const RecipeDetailPage = {
     /**
      * 이벤트 바인딩
      */
-    init() {
+    async init() {
+        // 리뷰 로드
+        if (this.recipe) {
+            await this.loadReviews();
+        }
+
+        // 리뷰 모달 추가
+        const reviewModalHtml = Components.ReviewModal({
+            id: 'recipeReviewModal',
+            recipeTitle: this.recipe?.title || '',
+            onSubmit: 'RecipeDetailPage.submitReview'
+        });
+        document.body.insertAdjacentHTML('beforeend', reviewModalHtml);
+
+        // 후기 작성 버튼
+        const writeReviewBtn = document.getElementById('writeReviewBtn');
+        if (writeReviewBtn) {
+            writeReviewBtn.addEventListener('click', () => {
+                Components.openModal('recipeReviewModal');
+            });
+        }
+
         // 뒤로가기
         const backBtn = document.getElementById('backBtn');
         if (backBtn) {
@@ -547,6 +583,61 @@ const RecipeDetailPage = {
         } catch (error) {
             console.error('레시피 삭제 실패:', error);
             Utils.showToast('레시피 삭제에 실패했습니다.', 'error');
+        }
+    },
+
+    /**
+     * 리뷰 로드
+     */
+    async loadReviews() {
+        if (!this.recipe) return;
+
+        try {
+            const reviews = await db.getReviews(this.recipe.id);
+            const reviewListContainer = document.getElementById('reviewListContainer');
+            if (reviewListContainer) {
+                reviewListContainer.innerHTML = Components.ReviewList({
+                    reviews: reviews,
+                    emptyMessage: '아직 후기가 없습니다. 첫 번째 후기를 작성해보세요!'
+                });
+            }
+        } catch (error) {
+            console.error('리뷰 로드 실패:', error);
+            const reviewListContainer = document.getElementById('reviewListContainer');
+            if (reviewListContainer) {
+                reviewListContainer.innerHTML = '<p style="color: var(--text-muted);">리뷰를 불러오는데 실패했습니다.</p>';
+            }
+        }
+    },
+
+    /**
+     * 리뷰 제출
+     */
+    async submitReview(data) {
+        if (!this.recipe) return;
+
+        try {
+            await db.addReview(
+                this.recipe.id,
+                data.rating,
+                data.review,
+                data.author
+            );
+
+            Components.closeModal('recipeReviewModal');
+            Utils.showToast('리뷰가 저장되었습니다.', 'success');
+
+            // 레시피 정보 갱신
+            this.recipe = await db.getRecipe(this.recipe.id);
+
+            // 리뷰 목록 갱신
+            await this.loadReviews();
+
+            // 레시피 상세 페이지 갱신 (별점 표시 업데이트)
+            App.navigateTo('recipe-detail', { id: this.recipe.id });
+        } catch (error) {
+            console.error('리뷰 저장 실패:', error);
+            Utils.showToast('리뷰 저장에 실패했습니다.', 'error');
         }
     }
 };
